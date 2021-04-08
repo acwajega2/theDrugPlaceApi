@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: TheDrugPlaceManagementSoftware
+  data:
+    mongodb:
+      uri: mongodb://test:test!23@192.53.171.239:27017/test?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false
+      authentication-database: admin
+      database: thedrugplace
