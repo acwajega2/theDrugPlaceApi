@@ -8,12 +8,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
@@ -22,9 +25,11 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 public class SalesController {
 
     private final MongoTemplate drugplaceDb;
- //   private final Logger logger = LoggerFactory.getLogger("salesapi");
+    private final Logger logger = LoggerFactory.getLogger("drugPlaceSalesApi");
+
 
     public SalesController(MongoClient client) {
+
         this.drugplaceDb  = new MongoTemplate(client, "thedrugplace");
     }
 
@@ -32,41 +37,50 @@ public class SalesController {
     @PostMapping(value = "/newsale")
     public NewSaleResponse saveNewSale (@RequestBody NewSaleRequest newSaleRequest){
 
+
+        logger.info("New Sales Request");
         Query query = Query.query(new Criteria().andOperator(
                 where("entryDate").is(newSaleRequest.getEntryDate()),
                 where("branchId").is(newSaleRequest.getBranchId())
 
         ));
 
-        Sales newSale = drugplaceDb.findOne(query,Sales.class);
+        logger.info("New Sales Request 2");
+        try{
+            Sales newSale = drugplaceDb.findOne(query,Sales.class);
+//
+            logger.info("New Sales Request 3");
+//
+            if (newSale == null){
+                logger.info("New Sales Request 4");
+
+                //------> Record is new
+                newSale = new Sales();
+                newSale.setAmount(newSaleRequest.getAmount());
+                newSale.setBranchId(newSaleRequest.getBranchId());
+                newSale.setEntryDate(newSaleRequest.getEntryDate());
+                newSale.setStaffId(newSaleRequest.getStaffName());
+                drugplaceDb.save(newSale);
 
 
-        if (newSale == null){
+            }
+            else
 
-            //------> Record is new
-            newSale = new Sales();
-            newSale.setAmount(newSaleRequest.getAmount());
-            newSale.setBranchId(newSaleRequest.getBranchId());
-            newSale.setEntryDate(newSaleRequest.getEntryDate());
-            newSale.setStaffId(newSaleRequest.getStaffName());
-
-            drugplaceDb.save(newSale);
-
+            {
+                logger.info("New Sales Request 4");
+                //-----> record is going to be update
+                newSale.setAmount(newSaleRequest.getAmount());
+                drugplaceDb.save(newSale);
+                //("Step H");
+            }
 
         }
-        else
-
-        {
-
-            //-----> record is going to be update
-            newSale.setAmount(newSaleRequest.getAmount());
-            drugplaceDb.save(newSale);
-            //("Step H");
+        catch (Exception e){
+          logger.error("Error :{}",e.getMessage());
         }
 
-
-
-
+        //-------------> clean code for nullable ---->
+        logger.info("New Sales Request 5");
         //("Step I");
         NewSaleResponse newSaleResponse = new NewSaleResponse();
         newSaleResponse.setBranchId(newSaleRequest.getBranchId());
@@ -76,7 +90,7 @@ public class SalesController {
         newSaleResponse.setStaffName(newSaleRequest.getStaffName());
         newSaleResponse.setStatusCode("200");
         newSaleResponse.setDescription("Operation was successful");
-
+        logger.info("New Sales Request 6");
         return newSaleResponse;
     }
     //-------------End of posting new sale
@@ -85,11 +99,16 @@ public class SalesController {
 
     //----------------------> Get All Sales --------------------------------------
     @PostMapping(value = "/getAllSales")
-    public List<Sales> getAllSales (){
+    public Optional<List<Sales>> getAllSales (){
+        
 
         List<Sales> salesList = drugplaceDb.findAll(Sales.class);
 
-        return salesList;
+
+        //-
+
+
+        return Optional.of(salesList);
 
 
     }

@@ -3,6 +3,9 @@ spring:
     name: TheDrugPlaceManagementSoftware
   data:
     mongodb:
-      uri: mongodb://test:test!23@192.53.171.239:27017/test?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false
+      #uri: mongodb://wacUser:Uganda!2123017@172.105.59.236:27017/thedrugplace
       authentication-database: admin
       database: thedrugplace
+      username: wacUser
+      password: Uganda!2123017
+      host: 172.105.59.236
