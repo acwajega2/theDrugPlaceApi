@@ -9,10 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -20,6 +17,7 @@ import java.util.Optional;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/ops/sales")
 public class SalesController {
@@ -53,7 +51,6 @@ public class SalesController {
 //
             if (newSale == null){
                 logger.info("New Sales Request 4");
-
                 //------> Record is new
                 newSale = new Sales();
                 newSale.setAmount(newSaleRequest.getAmount());
@@ -61,11 +58,8 @@ public class SalesController {
                 newSale.setEntryDate(newSaleRequest.getEntryDate());
                 newSale.setStaffId(newSaleRequest.getStaffName());
                 drugplaceDb.save(newSale);
-
-
             }
             else
-
             {
                 logger.info("New Sales Request 4");
                 //-----> record is going to be update
@@ -99,20 +93,9 @@ public class SalesController {
 
     //----------------------> Get All Sales --------------------------------------
     @PostMapping(value = "/getAllSales")
-    public Optional<List<Sales>> getAllSales (){
-        
-
-        List<Sales> salesList = drugplaceDb.findAll(Sales.class);
-
-
-        //-
-
-
+    public Optional<List<Sales>> getAllSales (){       
+        List<Sales> salesList = drugplaceDb.findAll(Sales.class);      
         return Optional.of(salesList);
-
-
     }
-
-
     //----------------------> End of Getting All Sales---------------------------------
 }
