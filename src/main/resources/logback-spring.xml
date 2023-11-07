@@ -5,7 +5,7 @@
         <property name="logfolder" value="/var/log/drugPlaceSales"/>
 
         <appender name="SIFTER" class="ch.qos.logback.classic.sift.SiftingAppender">
-            <discriminator class="com.thedrugplace.com.DrugPlaceSalesApi.controllers.sales.LogDiscriminator"/>
+            <discriminator class="com.thedrugplace.com.DrugPlaceSalesApi.beans.LogDiscriminator"/>
             <sift>
                 <appender name="FILE-${loggerName}" class="ch.qos.logback.core.rolling.RollingFileAppender">
                     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">

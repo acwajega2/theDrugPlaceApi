@@ -1,11 +1,36 @@
 spring:
   application:
     name: TheDrugPlaceManagementSoftware
-  data:
-    mongodb:
-      #uri: mongodb://wacUser:Uganda!2123017@172.105.59.236:27017/thedrugplace
-      authentication-database: admin
-      database: thedrugplace
-      username: wacUser
-      password: Uganda!2123017
-      host: 172.105.59.236
+
+  liquibase:
+    change-log: classpath:db/changelog/db-changelog-master.xml
+
+  datasource:
+    url: ${YOUR_DB_URL}
+    username: ${YOUR_DB_USERNAME}
+    password: ${YOUR_DB_PASSWORD}
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  hibernate:
+    naming:
+      physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+grafana:
+  url: ${YOUR_GRAFANA_URL}
+
+server:
+  port: 8008

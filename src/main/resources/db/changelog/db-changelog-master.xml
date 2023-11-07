@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <!-- Create branches table -->
+    <changeSet id="create-table-branches" author="Chris Wajega">
+        <createTable tableName="branches">
+            <column name="branchId" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_BRANCHES" />
+            </column>
+            <column name="branchName" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="branchLocation" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="branchCode" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="branch_manager_id" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="branch_opening_date" type="DATE">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+
+
+    <!-- Create dailyExpenses table -->
+    <changeSet id="create-table-dailyExpenses" author="Chris Wajega">
+        <createTable tableName="daily_expenses">
+            <column name="expenseId" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_DAILY_EXPENSES" />
+            </column>
+            <column name="staff_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="expense_date" type="DATE">
+                <constraints nullable="false" />
+            </column>
+            <column name="expenseAmount" type="DOUBLE">
+                <constraints nullable="false" />
+            </column>
+            <column name="transaction_reference" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="expenseCategory" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="receipt_image_url" type="VARCHAR(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="branch_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+
+
+    <!-- Create dailySales table -->
+    <changeSet id="create-table-dailySales" author="Chris Wajega">
+        <createTable tableName="daily_sales">
+            <column name="salesId" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_DAILY_SALES" />
+            </column>
+            <column name="staff_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="sale_date" type="DATE">
+                <constraints nullable="false" />
+            </column>
+            <column name="saleAmount" type="DOUBLE">
+                <constraints nullable="false" />
+            </column>
+            <column name="payment_method" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="transaction_reference" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="branch_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <!-- Create staff table -->
+    <changeSet id="create-table-staff" author="Chris Wajega">
+        <createTable tableName="staff">
+            <column name="staffId" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_STAFF" />
+            </column>
+            <column name="branch_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="staffName" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="staffRole" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="staffEmail" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="staffPhone" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="hire_date" type="DATE">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+
+
+    <!-- Create staff_salaries table -->
+    <changeSet id="create-table-staff-salaries" author="Chris Wajega">
+        <createTable tableName="staff_salaries">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_STAFF_SALARIES" />
+            </column>
+            <column name="staff_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="amount" type="DECIMAL(10,2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="transaction_reference" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="payment_date" type="DATE">
+                <constraints nullable="false" />
+            </column>
+            <column name="branch_id" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Create foreign key for staff_salaries association with staff -->
+    <changeSet id="add-foreign-key-staffSalaries-staff" author="Chris Wajega">
+        <addForeignKeyConstraint
+                baseTableName="staff_salaries"
+                baseColumnNames="staff_id"
+                constraintName="FK_STAFF_SALARIES_STAFF"
+                referencedTableName="staff"
+                referencedColumnNames="staffId"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+
+    <!-- Create foreign key for staff_salaries association with branches -->
+    <changeSet id="add-foreign-key-staffSalaries-branch" author="Chris Wajega">
+        <addForeignKeyConstraint
+                baseTableName="staff_salaries"
+                baseColumnNames="branch_id"
+                constraintName="FK_STAFF_SALARIES_BRANCH"
+                referencedTableName="branches"
+                referencedColumnNames="branchId"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+
+
+
+    <changeSet id="add-foreign-key-staffSalaries" author="Chris Wajega">
+        <addForeignKeyConstraint
+                baseTableName="staff_salaries"
+                baseColumnNames="branch_id"
+                constraintName="FK_STAFFSALARIES_BRANCH"
+                referencedTableName="branches"
+                referencedColumnNames="branchId"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+
+    <!-- Create foreign keys for dailyExpenses association with staff and branches -->
+    <changeSet id="add-foreign-key-dailyExpenses-staff" author="Chris Wajega">
+        <addForeignKeyConstraint
+                baseTableName="daily_expenses"
+                baseColumnNames="staff_id"
+                constraintName="FK_DAILYEXPENSES_STAFF"
+                referencedTableName="staff"
+                referencedColumnNames="staffId"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+
+    <changeSet id="add-foreign-key-dailyExpenses-branch" author="Chris Wajega">
+        <addForeignKeyConstraint
+                baseTableName="daily_expenses"
+                baseColumnNames="branch_id"
+                constraintName="FK_DAILYEXPENSES_BRANCH"
+                referencedTableName="branches"
+                referencedColumnNames="branchId"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+
+    <!-- Create foreign keys for dailySales association with staff and branches -->
+    <changeSet id="add-foreign-key-dailySales-staff" author="Chris Wajega">
+        <addForeignKeyConstraint
+                baseTableName="daily_sales"
+                baseColumnNames="staff_id"
+                constraintName="FK_DAILYSALES_STAFF"
+                referencedTableName="staff"
+                referencedColumnNames="staffId"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+
+    <changeSet id="add-foreign-key-dailySales-branch" author="Chris Wajega">
+        <addForeignKeyConstraint
+                baseTableName="daily_sales"
+                baseColumnNames="branch_id"
+                constraintName="FK_DAILYSALES_BRANCH"
+                referencedTableName="branches"
+                referencedColumnNames="branchId"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+
+    <!-- Create foreign key for staff association with branches -->
+    <changeSet id="add-foreign-key-staff-branch" author="Chris Wajega">
+        <addForeignKeyConstraint
+                baseTableName="staff"
+                baseColumnNames="branch_id"
+                constraintName="FK_STAFF_BRANCH"
+                referencedTableName="branches"
+                referencedColumnNames="branchId"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"
+        />
+    </changeSet>
+
+
+</databaseChangeLog>
