@@ -140,6 +140,7 @@
     </dependencies>
 
     <build>
+        <finalName>siita-server</finalName> <!-- This sets the base name of the generated JAR -->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
