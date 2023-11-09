@@ -31,15 +31,6 @@ jobs:
         run: |
           echo "siita-server.jar is located at: ${{ steps.find-jar.outputs.stdout }}"
 
-      - name: Check if JAR file exists
-        run: |
-          if [ -f "${{ steps.find-jar.outputs.stdout }}" ]; then
-            echo "siita-server.jar exists."
-          else
-            echo "siita-server.jar does not exist. Stopping the pipeline."
-            exit 1
-          fi
-
       - name: Copy JAR to EC2
         if: success() # Only proceed if the previous step was successful
         uses: appleboy/scp-action@v0.1.4
@@ -48,7 +39,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: ${{ steps.find-jar.outputs.stdout }}
+          source: /home/runner/work/theDrugPlaceApi/theDrugPlaceApi/target/siita-server.jar
           target: /home/ec2-user/apps/siita-server
 
       - name: SSH into EC2 and start the application
