@@ -23,8 +23,20 @@ jobs:
         run: mvn clean install -DskipTests
 
       - uses: actions/checkout@v3
+      - name: List GitHub Workspace Files
+        run: |
+          # Use the 'ls' command to list files and directories in the GITHUB_WORKSPACE
+          ls -R $GITHUB_WORKSPACE > workspace_files.log
+
+      - name: View Workspace Files Log
+        run: cat workspace_files.log
+
+
+
+
+
       - name: Copy JAR to EC2
-        uses: appleboy/scp-action@v0.1.4
+        uses: appleboy/scp-action@master
         with:
           debug: true
           host: ${{ secrets.EC2_HOST }}
