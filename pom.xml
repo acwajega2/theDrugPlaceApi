@@ -13,7 +13,7 @@
     <groupId>com.thedrugplace.com</groupId>
     <artifactId>DrugPlaceSalesApi</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>DrugPlaceSalesApi</name>
     <description>Demo project for Spring Boot</description>
 
