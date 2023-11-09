@@ -22,27 +22,36 @@ jobs:
       - name: Build the Spring application
         run: mvn clean install -DskipTests
 
-      - uses: actions/checkout@v3
+      - name: Find siita-server.jar location
+        run: |
+          find $GITHUB_WORKSPACE -type f -name siita-server.jar
+        id: find-jar
+
+      - name: Show JAR file location
+        run: |
+          echo "siita-server.jar is located at: ${{ steps.find-jar.outputs.stdout }}"
 
       - name: Check if JAR file exists
         run: |
-          if [ -f "target/siita-server.jar" ]; then
+          if [ -f "${{ steps.find-jar.outputs.stdout }}" ]; then
             echo "siita-server.jar exists."
           else
-            echo "siita-server.jar does not exist."
+            echo "siita-server.jar does not exist. Stopping the pipeline."
             exit 1
           fi
 
       - name: Copy JAR to EC2
+        if: success() # Only proceed if the previous step was successful
         uses: appleboy/scp-action@v0.1.4
         with:
           debug: true
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: target/siita-server.jar
+          source: ${{ steps.find-jar.outputs.stdout }}
           target: /home/ec2-user/apps/siita-server
 
       - name: SSH into EC2 and start the application
+        if: success() # Only proceed if the previous step was successful
         run: |
           ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'nohup java -jar /home/ec2-user/apps/siita-server/siita-server.jar > /dev/null 2>&1 &'
