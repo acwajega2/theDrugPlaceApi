@@ -30,7 +30,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: target/siita-server.jar
+          source: /home/runner/work/theDrugPlaceApi/theDrugPlaceApi/target/siita-server.jar
           target: /home/ec2-user/apps/siita-server
 
       - name: SSH into EC2 and start the application
