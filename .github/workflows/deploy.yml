@@ -42,27 +42,19 @@ jobs:
           source: /home/runner/work/theDrugPlaceApi/theDrugPlaceApi/target/siita-server.jar
           target: /home/ec2-user/apps/siita-server
 
+      - name: Setup SSH
+        run: |
+          echo "$EC2_PRIVATE_KEY" > ssh_key
+          chmod 600 ssh_key
+          ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+          cat ssh_key 
+
+      - name: SSH into EC2 and Start Application
+        run: |
+          ssh -i ssh_key ec2-user@$EC2_HOST "nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &"
+
 #      - name: SSH into EC2 and start the application
 #        if: success() # Only proceed if the previous step was successful
 #        run: |
 #          ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &'
 #      - name: SSH into EC2 and start the application
-
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/github-actions-key
-          chmod 600 ~/.ssh/github-actions-key
-          cat >>~/.ssh/config <<END
-          Host ec2
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/github-actions-key
-            StrictHostKeyChecking no
-          END
-          env:
-            SSH_HOST: ${{ secrets.EC2_HOST }}
-            SSH_USER: ${{ secrets.EC2_USERNAME }}
-            SSH_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-      - name: List home directory
-        run: ssh ec2 'ls -la'
