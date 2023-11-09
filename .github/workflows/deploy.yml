@@ -20,7 +20,7 @@ jobs:
           java-version: 17 # Adjust the Java version as needed
 
       - name: Build the Spring application
-        run: mvn clean install -DskipTests
+        run: ./mvnw clean package -DskipTests
 
       - uses: actions/checkout@v3
       - name: Copy JAR to EC2
