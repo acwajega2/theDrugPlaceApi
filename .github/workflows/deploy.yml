@@ -42,7 +42,14 @@ jobs:
           source: /home/runner/work/theDrugPlaceApi/theDrugPlaceApi/target/siita-server.jar
           target: /home/ec2-user/apps/siita-server
 
+#      - name: SSH into EC2 and start the application
+#        if: success() # Only proceed if the previous step was successful
+#        run: |
+#          ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &'
       - name: SSH into EC2 and start the application
-        if: success() # Only proceed if the previous step was successful
         run: |
-          ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &'
+          echo "$PRIVATE_KEY" > /tmp/private_key
+          chmod 600 /tmp/private_key
+          ssh -i /tmp/private_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &'
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
