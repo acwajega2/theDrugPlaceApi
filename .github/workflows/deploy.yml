@@ -46,17 +46,23 @@ jobs:
 #        if: success() # Only proceed if the previous step was successful
 #        run: |
 #          ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &'
-      - name: Set up SSH key
-        run: echo "$SSH_PRIVATE_KEY" > $HOME/.ssh/id_rsa && chmod 600 $HOME/.ssh/id_rsa
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#      - name: SSH into EC2 and start the application
 
-      - name: Install SSH client
-        run: sudo apt-get update && sudo apt-get install -y openssh-client
-
-      - name: SSH into EC2 and start the application
+      - name: Configure SSH
         run: |
-            ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &'
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_auth_sock
-          SSH_AGENT_PID: $SSH_AGENT_PID
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/github-actions-key
+          chmod 600 ~/.ssh/github-actions-key
+          cat >>~/.ssh/config <<END
+          Host ec2
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/github-actions-key
+            StrictHostKeyChecking no
+          END
+          env:
+            SSH_HOST: ${{ secrets.EC2_HOST }}
+            SSH_USER: ${{ secrets.EC2_USERNAME }}
+            SSH_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+      - name: List home directory
+        run: ssh ec2 'ls -la'
