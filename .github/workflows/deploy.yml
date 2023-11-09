@@ -23,29 +23,26 @@ jobs:
         run: mvn clean install -DskipTests
 
       - uses: actions/checkout@v3
-      - name: List GitHub Workspace Files
+
+      - name: Check if JAR file exists
         run: |
-          # Use the 'ls' command to list files and directories in the GITHUB_WORKSPACE
-          ls -R $GITHUB_WORKSPACE > workspace_files.log
-
-      - name: View Workspace Files Log
-        run: cat workspace_files.log
-
-
-
-
+          if [ -f "target/siita-server.jar" ]; then
+            echo "siita-server.jar exists."
+          else
+            echo "siita-server.jar does not exist."
+            exit 1
+          fi
 
       - name: Copy JAR to EC2
-        uses: appleboy/scp-action@master
+        uses: appleboy/scp-action@v0.1.4
         with:
           debug: true
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: /home/runner/work/theDrugPlaceApi/theDrugPlaceApi/target/siita-server.jar
+          source: target/siita-server.jar
           target: /home/ec2-user/apps/siita-server
 
       - name: SSH into EC2 and start the application
         run: |
           ssh -i ${{ secrets.EC2_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'nohup java -jar /home/ec2-user/apps/siita-server/siita-server.jar > /dev/null 2>&1 &'
-
