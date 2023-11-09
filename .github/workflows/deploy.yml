@@ -53,7 +53,7 @@ jobs:
 
       - name: SSH into EC2 and Start Application
         run: |
-          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@$${{ secrets.EC2_HOST }} "nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &"
+          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &"
 
 #      - name: SSH into EC2 and start the application
 #        if: success() # Only proceed if the previous step was successful
