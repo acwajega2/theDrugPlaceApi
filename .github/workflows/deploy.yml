@@ -56,13 +56,22 @@ jobs:
 
       - name: Check if the application is running
         run: |
-          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pgrep -f siita-server.jar"
+          result=$(ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pgrep -f siita-server.jar" || true)
+          if [ -n "$result" ]; then
+            echo "Application is running."
+            echo "::set-output name=app_running::true"
+          else
+            echo "Application is not running."
+            echo "::set-output name=app_running::false"
+          fi
         id: pgrep
 
-#      - name: Terminate existing application if running
-#        if: success() && steps.pgrep.outputs.stdout
-#        run: |
-#          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pkill -f siita-server.jar"
+      - name: Terminate existing application if running
+        if: success() && steps.pgrep.outputs.app_running == 'true'
+        run: |
+          echo "Terminating existing application."
+          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pkill -f siita-server.jar"
+      
 
       - name: Start the application
         run: |
