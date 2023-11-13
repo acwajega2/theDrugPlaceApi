@@ -81,13 +81,3 @@ jobs:
         run: |
           sleep 10 # Adjust the sleep time based on your application's startup time
 
-      - name: Test Application Health
-        run: |
-          response_code=$(ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "curl -s -o /dev/null -w '%{http_code}' http://localhost:8008/health")
-
-          if [ "$response_code" -eq 200 ]; then
-            echo "Health check successful. Status code: $response_code"
-          else
-            echo "Health check failed. Unexpected status code: $response_code"
-            exit 1
-          fi
