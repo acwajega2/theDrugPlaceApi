@@ -4,9 +4,9 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db-changelog-master.xml
   datasource:
-    url: jdbc:postgresql://localhost:5432/drugDb
+    url: jdbc:postgresql://siitadb.cp0hvp28oiad.us-east-1.rds.amazonaws.com:5432/siitaDb
     username: postgres
-    password: postgres
+    password: NamonoElgon
     driver-class-name: org.postgresql.Driver
   logging:
     level:
