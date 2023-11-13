@@ -83,7 +83,7 @@ jobs:
 
       - name: Test the application
         run: |
-          response_code=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.EC2_HOST }}:8008/health)
+          response_code=$(curl  http://${{ secrets.EC2_HOST }}:8008/health)
           if [ $response_code -eq 200 ]; then
             echo "Application is running and healthy."
           else
