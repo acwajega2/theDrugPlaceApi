@@ -125,6 +125,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!-- Commons Lang -->
         <dependency>
             <groupId>org.apache.commons</groupId>
