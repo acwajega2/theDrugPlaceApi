@@ -73,20 +73,25 @@ jobs:
           ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pkill -f siita-server.jar"
       
 
-      - name: Start the application
+      - name: Start and Test the application
         run: |
           ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &"
-
-      - name: Wait for the application to start
-        run: |
-          sleep 10 # Adjust the sleep time based on your application's startup time
-
-      - name: Test the application
-        run: |
-          response_code=$(curl  http://${{ secrets.EC2_HOST }}:8008/health)
+          # Test the application
+          url="http://${{ secrets.EC2_HOST }}:8008/health"
+          retries=10
+          wait_seconds=5
+      
+          for ((i=1; i<=$retries; i++)); do
+          response_code=$(curl --silent --output /dev/null --write-out "%{http_code}" "$url")
+          
           if [ $response_code -eq 200 ]; then
-            echo "Application is running and healthy."
+          echo "Application is running and healthy. HTTP Status Code: $response_code"
+          break
+          elif [ $i -eq $retries ]; then
+          echo "Application did not start properly. Last response code: $response_code"
+          exit 1
           else
-            echo "Application is not running properly. Response code: $response_code"
-            exit 1
+          echo "Retrying in $wait_seconds seconds (Attempt $i/$retries)..."
+          sleep $wait_seconds
           fi
+          done
