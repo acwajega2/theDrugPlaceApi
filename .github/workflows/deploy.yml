@@ -10,39 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Java
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
           java-version: '17' # Adjust the Java version as needed
 
-      # Step 3: Build the Spring application
       - name: Build the Spring application
         run: mvn clean install -DskipTests
 
-      # Step 4: Set permissions and clean target directory
-      - name: Set permissions and clean target directory
-        run: |
-          chmod -R 777 $GITHUB_WORKSPACE/target/*
-          rm -rf $GITHUB_WORKSPACE/target/*
-
-      # Step 5: Find siita-server.jar location
       - name: Find siita-server.jar location
         run: |
           find $GITHUB_WORKSPACE -type f -name siita-server.jar
         id: find-jar
 
-      # Step 6: Show JAR file location
       - name: Show JAR file location
         run: |
           echo "siita-server.jar is located at: ${{ steps.find-jar.outputs.stdout }}"
 
-      # Step 7: Copy JAR to EC2
       - name: Copy JAR to EC2
         if: success()
         uses: appleboy/scp-action@v0.1.4
@@ -53,7 +41,6 @@ jobs:
           source: /home/runner/work/theDrugPlaceApi/theDrugPlaceApi/target/siita-server.jar
           target: /home/ec2-user/apps/siita-server/
 
-      # Step 8: Setup SSH
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -63,29 +50,28 @@ jobs:
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
           cat ssh_key 
 
-      # Step 9: Check if the application is running
+      - name: SSH into AWS instance and set permissions
+        run: |
+          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "chmod -R 777 /home/ec2-user/apps/*"
+
       - name: Check if the application is running
         run: |
           ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pgrep -f siita-server.jar"
         id: pgrep
 
-      # Step 10: Terminate existing application if running
-      - name: Terminate existing application if running
-        if: success() && steps.pgrep.outputs.stdout
-        run: |
-          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pkill -f siita-server.jar"
+#      - name: Terminate existing application if running
+#        if: success() && steps.pgrep.outputs.stdout
+#        run: |
+#          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pkill -f siita-server.jar"
 
-      # Step 11: Start the application
       - name: Start the application
         run: |
           ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &"
 
-      # Step 12: Wait for the application to start
       - name: Wait for the application to start
         run: |
           sleep 10 # Adjust the sleep time based on your application's startup time
 
-      # Step 13: Test the application
       - name: Test the application
         run: |
           response_code=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.EC2_HOST }}:8080/health)
