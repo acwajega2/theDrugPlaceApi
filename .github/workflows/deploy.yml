@@ -52,7 +52,7 @@ jobs:
 
       - name: SSH into AWS instance and set permissions
         run: |
-          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "chmod -R 777 /home/ec2-user/apps/*"
+          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "sudo chmod -R 777 /home/ec2-user/apps/*"
 
       - name: Check if the application is running
         run: |
