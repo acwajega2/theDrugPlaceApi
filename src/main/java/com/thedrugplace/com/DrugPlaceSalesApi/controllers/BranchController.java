@@ -71,7 +71,7 @@ public class BranchController {
     /**
      * Update a branch by its ID.
      *
-     * @param branchId  The ID of the branch to update.
+     * @param branchId  The ID of the branch to update.ddd
      * @param branchDto The updated branch information.
      * @return ResponseEntity with the updated branch and HTTP status 200 (OK) if updated,
      * or 404 (Not Found) if the branch was not found.
