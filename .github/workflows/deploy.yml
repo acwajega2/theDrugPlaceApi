@@ -39,7 +39,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: /home/runner/work/theDrugPlaceApi/theDrugPlaceApi/target/siita-server.jar
-          target: /home/ec2-user/apps/siita-server/
+          target: /home/ubuntu/apps/siita-server/
 
       - name: Setup SSH
         run: |
@@ -75,7 +75,7 @@ jobs:
 
       - name: Start the application
         run: |
-          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "nohup java -jar /home/ec2-user/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &"
+          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "nohup java -jar /home/ubuntu/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &"
 
       - name: Wait for the application to start
         run: |
