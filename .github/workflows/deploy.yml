@@ -31,15 +31,15 @@ jobs:
         run: |
           echo "siita-server.jar is located at: ${{ steps.find-jar.outputs.stdout }}"
 
-#      - name: Copy JAR to EC2
-#        if: success()
-#        uses: appleboy/scp-action@v0.1.4
-#        with:
-#          host: ${{ secrets.EC2_HOST }}
-#          username: ${{ secrets.EC2_USERNAME }}
-#          key: ${{ secrets.EC2_PRIVATE_KEY }}
-#          source: /home/runner/work/theDrugPlaceApi/theDrugPlaceApi/target/siita-server.jar
-#          target: /home/ubuntu/apps/siita-server/
+      - name: Copy JAR to EC2
+        if: success()
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: /home/runner/work/theDrugPlaceApi/theDrugPlaceApi/target/siita-server.jar
+          target: /home/ubuntu/apps/siita-server/
 
       - name: Setup SSH
         run: |
