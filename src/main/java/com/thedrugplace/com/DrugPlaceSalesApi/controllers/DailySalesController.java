@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 @RequestMapping("/api/v1/dailySales")
 public class DailySalesController {
     private static final Logger logger = Logger.getLogger(DailySalesController.class.getName());
-
     private final DailySalesService dailySalesService;
 
     @Autowired
