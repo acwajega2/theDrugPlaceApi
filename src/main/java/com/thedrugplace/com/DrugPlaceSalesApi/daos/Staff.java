@@ -1,9 +1,7 @@
 package com.thedrugplace.com.DrugPlaceSalesApi.daos;
 
-import lombok.Data;
-
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
