@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = { "com.thedrugplace.com.*" })
 @EntityScan("com.thedrugplace.com.*")
 public class DrugPlaceSalesApiApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(DrugPlaceSalesApiApplication.class, args);
 	}
