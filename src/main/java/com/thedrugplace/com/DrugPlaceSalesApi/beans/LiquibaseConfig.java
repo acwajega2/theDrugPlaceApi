@@ -30,6 +30,8 @@ public class LiquibaseConfig {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(dataSource);
         liquibase.setChangeLog(changeLog);
+        // Add the liquibaseUpdateChecksums flag to recalculate checksums
+        liquibase.setContexts("liquibaseUpdateChecksums");
 
         // Log the Liquibase configuration
         logger.info("Initializing Liquibase with change log: " + changeLog);

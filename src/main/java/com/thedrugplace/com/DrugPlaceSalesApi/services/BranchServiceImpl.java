@@ -1,6 +1,7 @@
 package com.thedrugplace.com.DrugPlaceSalesApi.services;
 
 import com.thedrugplace.com.DrugPlaceSalesApi.daos.Branch;
+import com.thedrugplace.com.DrugPlaceSalesApi.daos.DailyExpenses;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.branch.BranchDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.branch.BranchProfitDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.exceptions.CustomException;
@@ -14,6 +15,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,14 +36,25 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
+    @Transactional
     public BranchDto createBranch(BranchDto branchDto) {
         try {
             // Set the generated branch code in the DTO
          //   branchDto.setBranchCode(generateRandomBranchCode());
             Branch branch = branchMapper.dtoToEntity(branchDto);
-             if (branchRepository.findByBranchName(branch.getBranchName()) !=null){
+
+             if (branchRepository.findBranchByBranchName(branch.getBranch_name()) !=null){
                  throw new CustomException("Branch already saved");
              }
+
+            String branchName = branchDto.getBranchName();
+            if (branchName == null || branchName.trim().isEmpty()) {
+                throw new CustomException("Branch name cannot be null or empty");
+            }
+            branch.setDailyExpenses(new ArrayList<>());
+            branch.setDailySales(new ArrayList<>());
+            branch.setStaffSalaries(new ArrayList<>());
+            System.out.println(branch);
             branchRepository.save(branch);
 
             return branchDto;

@@ -105,10 +105,10 @@ public class StaffController {
      * @param branchCode The branch code to filter staff members.
      * @return ResponseEntity with a list of staff members and HTTP status 200 (OK).
      */
-    @GetMapping("/by-branch-code")
-    public ResponseEntity<List<StaffDto>> getStaffByBranchCode(@RequestParam String branchCode) {
+    @GetMapping("/by-branch-code/{branchCode}")
+    public ResponseEntity<List<StaffDto>> getStaffByBranchCode(@PathVariable("branchCode") String branchCode) {
         logger.info("Getting staff members by branch code: " + branchCode);
-        List<StaffDto> staffList = staffService.getStaffByBranchCode(branchCode);
+        List<StaffDto> staffList = staffService.getStaffByBranch_code(branchCode);
         return ResponseEntity.status(HttpStatus.OK).body(staffList);
     }
 
@@ -118,8 +118,8 @@ public class StaffController {
      * @param phoneNumber The phone number to search for staff members.
      * @return ResponseEntity with a list of staff members and HTTP status 200 (OK).
      */
-    @GetMapping("/by-phone")
-    public ResponseEntity<List<StaffDto>> searchStaffByPhoneNumber(@RequestParam String phoneNumber) {
+    @GetMapping("/by-phone/{phoneNumber}")
+    public ResponseEntity<List<StaffDto>> searchStaffByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) {
         logger.info("Searching for staff members by phone number: " + phoneNumber);
         List<StaffDto> staffList = staffService.searchStaffByPhoneNumber(phoneNumber);
         return ResponseEntity.status(HttpStatus.OK).body(staffList);

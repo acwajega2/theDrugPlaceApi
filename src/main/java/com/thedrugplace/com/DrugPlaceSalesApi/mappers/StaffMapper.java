@@ -30,7 +30,14 @@ public class StaffMapper {
      * @return The corresponding StaffDto.
      */
     public StaffDto entityToDto(Staff staff) {
-        return modelMapper.map(staff, StaffDto.class);
+        StaffDto staffDto = new StaffDto();
+        staffDto.setStaffEmail(staff.getStaff_email());
+        staffDto.setStaffRole(staff.getStaff_role());
+        staffDto.setStaffName(staff.getStaff_name());
+        staffDto.setHireDate(staff.getHire_date().toString());
+        staffDto.setStaffPhone(staff.getStaff_phone());
+        staffDto.setBranchCode(staff.getBranch().getBranch_code());
+        return staffDto;
     }
 
     /**
@@ -41,20 +48,21 @@ public class StaffMapper {
      */
     public Staff dtoToEntity(@NotNull StaffDto staffDto) throws ParseException {
         Staff staff = new Staff();
-        staff.setStaffEmail(staffDto.getStaffEmail());
-        staff.setStaffName(staffDto.getStaffName());
-        staff.setStaffPhone(staffDto.getStaffPhone());
-        staff.setCreatedAt(LocalDateTime.now());
+        staff.setStaff_email(staffDto.getStaffEmail());
+        staff.setStaff_name(staffDto.getStaffName());
+        staff.setStaff_phone(staffDto.getStaffPhone());
+        staff.setCreated_at(LocalDateTime.now());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        staff.setHireDate(dateFormat.parse(staffDto.getHireDate()));
+        staff.setHire_date(dateFormat.parse(staffDto.getHireDate()));
         staff.setBranch(getBranchByCode(staffDto.getBranchCode()));
+        staff.setStaff_role(staffDto.getStaffRole());
 
         return staff;
     }
 
     private Branch getBranchByCode(String branchCode) {
 
-        Branch branch = branchRepository.findByBranchCode(branchCode);
+        Branch branch = branchRepository.findBranchByBranch_code(branchCode);
         if (branch == null) {
             throw new CustomException("Branch not found");
         }

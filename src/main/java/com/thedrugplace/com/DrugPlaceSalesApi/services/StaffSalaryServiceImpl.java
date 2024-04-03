@@ -5,6 +5,7 @@ import com.thedrugplace.com.DrugPlaceSalesApi.dtos.staff.StaffSalaryDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.exceptions.CustomException;
 import com.thedrugplace.com.DrugPlaceSalesApi.interfaces.StaffSalaryService;
 import com.thedrugplace.com.DrugPlaceSalesApi.mappers.StaffSalaryMapper;
+import com.thedrugplace.com.DrugPlaceSalesApi.repos.StaffRepository;
 import com.thedrugplace.com.DrugPlaceSalesApi.repos.StaffSalaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -18,6 +19,9 @@ import java.util.stream.Collectors;
 public class StaffSalaryServiceImpl implements StaffSalaryService {
     @Autowired
     private StaffSalaryRepository staffSalaryRepository;
+
+    @Autowired
+    private StaffRepository staffRepository;
     @Autowired
     private StaffSalaryMapper staffSalaryMapper;
 

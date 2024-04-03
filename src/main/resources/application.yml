@@ -2,9 +2,9 @@ spring:
   application:
     name: TheDrugPlaceManagementSoftware
   liquibase:
-    change-log: classpath:db/changelog/db-changelog-master.xml
+    change-log: classpath:db/changelog/db-changelog-master2.xml
   datasource:
-    url: jdbc:postgresql://localhost:5432/siitadb
+    url: jdbc:postgresql://localhost:5432/siita7db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver

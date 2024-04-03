@@ -2,6 +2,8 @@ package com.thedrugplace.com.DrugPlaceSalesApi.repos;
 
 import com.thedrugplace.com.DrugPlaceSalesApi.daos.StaffSalary;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -15,7 +17,8 @@ public interface StaffSalaryRepository extends JpaRepository<StaffSalary, Long> 
      * @param staffId The ID of the staff member to filter the results.
      * @return A list of StaffSalary objects associated with the specified staff member.
      */
-    List<StaffSalary> findAllByStaff_StaffId(Long staffId);
+    @Query("SELECT a FROM StaffSalary a  JOIN a.staff b WHERE b.staff_id= :staffId")
+    List<StaffSalary> findAllByStaff_StaffId(@Param("staffId") Long staffId);
 
     /**
      * Retrieves a list of staff salaries by the ID of the associated branch.
@@ -23,7 +26,8 @@ public interface StaffSalaryRepository extends JpaRepository<StaffSalary, Long> 
      * @param branchId The ID of the branch to filter the results.
      * @return A list of StaffSalary objects associated with the specified branch.
      */
-    List<StaffSalary> findAllByBranch_BranchId(Long branchId);
+    @Query("SELECT a FROM StaffSalary a JOIN a.branch b WHERE b.branch_id = :branchId")
+    List<StaffSalary> findAllByBranch_BranchId(@Param("branchId") Long branchId);
 
     /**
      * Retrieves a list of staff salaries by the phone number of the associated staff member.
@@ -31,7 +35,11 @@ public interface StaffSalaryRepository extends JpaRepository<StaffSalary, Long> 
      * @param staffPhone The phone number used to filter the results.
      * @return A list of StaffSalary objects associated with the specified phone number.
      */
-    List<StaffSalary> findAllByStaff_staffPhone(String staffPhone);
+    @Query("SELECT a FROM StaffSalary a JOIN a.staff b  WHERE b.staff_phone = :staffPhone")
+    List<StaffSalary> findAllByStaff_staffPhone(@Param("staffPhone") String staffPhone);
 
-    StaffSalary findByTransactionReference(String transactionReference);
+    @Query("SELECT a FROM StaffSalary a JOIN a.staff b  WHERE b.staff_phone = :staffPhone")
+    StaffSalary findAllByStaff_staffPhone2(@Param("staffPhone") String staffPhone);
+    @Query("SELECT a FROM StaffSalary a WHERE a.transaction_reference = :transactionReference")
+    StaffSalary findByTransactionReference(@Param("transactionReference") String transactionReference);
 }

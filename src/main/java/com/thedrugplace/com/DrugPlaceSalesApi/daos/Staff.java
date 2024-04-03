@@ -12,7 +12,8 @@ import java.util.Date;
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long staffId;
+    @Column(name = "staff_id")
+    private Long staff_id;
 
     /** The branch to which the staff member belongs. */
     @ManyToOne(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
@@ -20,30 +21,33 @@ public class Staff {
     private Branch branch;
 
     /** The name of the staff member. */
-    private String staffName;
+    @Column(name = "staff_name")
+    private String staff_name;
 
     /** The role or position of the staff member. */
-    private String staffRole;
+    @Column(name = "staff_role")
+    private String staff_role;
 
     /** The email address of the staff member. */
-    private String staffEmail;
+    @Column(name = "staff_email")
+    private String staff_email;
 
     /** The phone number of the staff member. */
-    private String staffPhone;
+    @Column(name = "staff_phone")
+    private String staff_phone;
 
     /** The date when the staff member was hired. */
     @Temporal(TemporalType.DATE)
     @Column(name = "hire_date")
-
-    private Date hireDate;
+    private Date hire_date;
 
     /** The timestamp when the staff record was created. */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now(); // Set the current date and time
+        created_at = LocalDateTime.now(); // Set the current date and time
     }
 }
