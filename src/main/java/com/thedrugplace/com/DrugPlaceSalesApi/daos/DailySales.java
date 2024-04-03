@@ -14,7 +14,8 @@ import java.util.Date;
 public class DailySales {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int salesId;
+    @Column(name = "sales_id")
+    private int sales_id;
 
     /** The staff member associated with the daily sales. */
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -24,27 +25,28 @@ public class DailySales {
     /** The date of the sale. */
     @Temporal(TemporalType.DATE)
     @Column(name = "sale_date")
-    private Date saleDate;
+    private Date sale_date;
 
     /** The amount of the sale. */
-    private double saleAmount;
+    @Column(name = "sale_amount")
+    private double sale_amount;
 
     /** The payment method used for the sale. */
     @Column(name = "payment_method")
-    private String paymentMethod;
+    private String payment_method;
 
     /** The transaction reference for the sale. */
     @Column(name = "transaction_reference")
-    private String transactionReference;
+    private String transaction_reference;
 
     /** The timestamp when the sale record was created. */
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now(); // Set the current date and time
+        created_at = LocalDateTime.now(); // Set the current date and time
     }
 
     @ManyToOne(cascade = CascadeType.MERGE)

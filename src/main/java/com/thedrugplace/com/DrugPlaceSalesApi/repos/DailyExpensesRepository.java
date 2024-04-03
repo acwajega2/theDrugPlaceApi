@@ -3,6 +3,7 @@ package com.thedrugplace.com.DrugPlaceSalesApi.repos;
 import com.thedrugplace.com.DrugPlaceSalesApi.daos.DailyExpenses;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,12 +18,12 @@ public interface DailyExpensesRepository extends JpaRepository<DailyExpenses, Lo
      *
      * @return A list of objects containing branch, staff, date, and total expenses data.
      */
-    @Query("SELECT b, s, de.createdAt, SUM(de.expenseAmount) as totalExpenses " +
+    @Query("SELECT b, s, de.created_at, SUM(de.expense_amount) as totalExpenses " +
             "FROM DailyExpenses de " +
             "JOIN de.staff s " +
             "JOIN s.branch b " +
-            "GROUP BY b, s, de.createdAt " +
-            "ORDER BY de.createdAt DESC")
+            "GROUP BY b, s, de.created_at " +
+            "ORDER BY de.created_at DESC")
     List<Object[]> findBranchExpensesWithStaffDetailsOrderByDateDesc();
 
     /**
@@ -30,7 +31,7 @@ public interface DailyExpensesRepository extends JpaRepository<DailyExpenses, Lo
      *
      * @return A list of objects containing branch, year, month, total expenses, and average expenses data.
      */
-    @Query("SELECT b, YEAR(de.createdAt) as year, MONTH(de.createdAt) as month, SUM(de.expenseAmount) as totalExpenses, AVG(de.expenseAmount) as averageExpenses " +
+    @Query("SELECT b, YEAR(de.created_at) as year, MONTH(de.created_at) as month, SUM(de.expense_amount) as totalExpenses, AVG(de.expense_amount) as averageExpenses " +
             "FROM DailyExpenses de " +
             "JOIN de.staff s " +
             "JOIN s.branch b " +
@@ -38,5 +39,6 @@ public interface DailyExpensesRepository extends JpaRepository<DailyExpenses, Lo
             "ORDER BY year DESC, month DESC, totalExpenses DESC")
     List<Object[]> findBranchExpensesPerformanceByMonthAndYear();
 
-    DailyExpenses findByTransactionReference(String transactionReference);
+    @Query("SELECT b FROM DailyExpenses b WHERE b.transaction_reference = :transactionReference")
+    DailyExpenses findByTransactionReference(@Param("transactionReference")  String transactionReference);
 }

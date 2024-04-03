@@ -22,7 +22,7 @@ public interface DailySalesRepository extends JpaRepository<DailySales, Long> {
     @Query("SELECT ds FROM DailySales ds " +
             "JOIN FETCH ds.staff s " +
             "JOIN FETCH s.branch b " +
-            "WHERE s.staffPhone = :staffPhone")
+            "WHERE s.staff_phone = :staffPhone")
     List<DailySales> findSalesByStaffPhoneNumberWithBranchDetails(@Param("staffPhone") String staffPhone);
 
     /**
@@ -30,12 +30,12 @@ public interface DailySalesRepository extends JpaRepository<DailySales, Long> {
      *
      * @return A list of objects containing branch, staff, date, and total expenses data.
      */
-    @Query("SELECT b, s, de.expenseDate, SUM(de.expenseAmount) as totalExpenses " +
+    @Query("SELECT b, s, de.expense_date, SUM(de.expense_amount) as totalExpenses " +
             "FROM DailyExpenses de " +
             "JOIN de.staff s " +
             "JOIN s.branch b " +
-            "GROUP BY b, s, de.expenseDate " +
-            "ORDER BY de.expenseDate DESC")
+            "GROUP BY b, s, de.expense_date " +
+            "ORDER BY de.expense_date DESC")
     List<Object[]> findBranchSalesWithStaffDetailsOrderByDateDesc();
 
     /**
@@ -43,7 +43,7 @@ public interface DailySalesRepository extends JpaRepository<DailySales, Long> {
      *
      * @return A list of objects containing branch, year, month, total sales, and average sales data.
      */
-    @Query("SELECT b, YEAR(ds.saleDate) as year, MONTH(ds.saleDate) as month, SUM(ds.saleAmount) as totalSales, AVG(ds.saleAmount) as averageSales " +
+    @Query("SELECT b, YEAR(ds.sale_date) as year, MONTH(ds.sale_date) as month, SUM(ds.sale_amount) as totalSales, AVG(ds.sale_amount) as averageSales " +
             "FROM DailySales ds " +
             "JOIN ds.staff s " +
             "JOIN s.branch b " +
@@ -56,12 +56,13 @@ public interface DailySalesRepository extends JpaRepository<DailySales, Long> {
      *
      * @return A list of objects containing staff, year, month, and total sales data.
      */
-    @Query("SELECT s, YEAR(ds.saleDate) as year, MONTH(ds.saleDate) as month, SUM(ds.saleAmount) as totalSales " +
+    @Query("SELECT s, YEAR(ds.sale_date) as year, MONTH(ds.sale_date) as month, SUM(ds.sale_amount) as totalSales " +
             "FROM DailySales ds " +
             "JOIN ds.staff s " +
             "GROUP BY s, year, month " +
             "ORDER BY year DESC, month DESC, totalSales DESC")
     List<Object[]> findBestPerformingStaffByMonthAndYear();
 
-    DailySales findByTransactionReference(String transactionReference);
+    @Query("SELECT b FROM DailySales b WHERE transaction_reference =:transactionReference ")
+    DailySales findByTransactionReference(@Param("transactionReference") String transactionReference);
 }

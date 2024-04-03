@@ -1,6 +1,9 @@
 package com.thedrugplace.com.DrugPlaceSalesApi.interfaces;
 
+import com.thedrugplace.com.DrugPlaceSalesApi.daos.Staff;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.staff.StaffDto;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,5 +67,6 @@ public interface StaffService {
      * @param branchCode The branch code to filter by.
      * @return A list of staff entry DTOs belonging to the specified branch.
      */
-    List<StaffDto> getStaffByBranchCode(String branchCode);
+    @Query("SELECT a,b.branch_code Staff a JOIN a.branch b WHERE b.branch_code = :branchCode")
+    List<StaffDto> getStaffByBranch_code(@Param("branchCode") String branchCode);
 }

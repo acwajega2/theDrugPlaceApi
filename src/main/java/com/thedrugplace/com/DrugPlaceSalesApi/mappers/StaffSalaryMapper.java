@@ -47,8 +47,22 @@ public class StaffSalaryMapper {
      * @return The corresponding StaffSalaryDto.
      */
     public StaffSalaryDto entityToDto(StaffSalary staffSalary) {
+        StaffSalaryDto staffSalaryDto = new StaffSalaryDto();
 
-        return modelMapper.map(staffSalary, StaffSalaryDto.class);
+        if (staffSalary != null) {
+            staffSalaryDto.setAmount(staffSalary.getAmount());
+
+            Branch branch = staffSalary.getBranch();
+            if (branch != null) {
+                staffSalaryDto.setBranchCode(branch.getBranch_code());
+            }
+
+            staffSalaryDto.setPaymentDate(staffSalary.getPayment_date());
+            staffSalaryDto.setTransactionReference(staffSalary.getTransaction_reference());
+            staffSalaryDto.setStaffPhone(staffSalary.getStaff().getStaff_phone());
+        }
+
+        return staffSalaryDto;
     }
 
     /**
@@ -62,14 +76,14 @@ public class StaffSalaryMapper {
         staffSalary.setStaff(getStaffBYPhone(staffSalaryDto.getStaffPhone()));
         staffSalary.setBranch(getBranchByCode(staffSalaryDto.getBranchCode()));
         staffSalary.setAmount(staffSalaryDto.getAmount());
-        staffSalary.setPaymentDate(staffSalaryDto.getPaymentDate());
-        staffSalary.setTransactionReference(staffSalaryDto.getTransactionReference());
+        staffSalary.setPayment_date(staffSalaryDto.getPaymentDate());
+        staffSalary.setTransaction_reference(staffSalaryDto.getTransactionReference());
         return staffSalary;
     }
 
     private Branch getBranchByCode(String branchCode) {
 
-        Branch branch = branchRepository.findByBranchCode(branchCode);
+        Branch branch = branchRepository.findBranchByBranch_code(branchCode);
         if (branch == null) {
             throw new CustomException("Branch not found");
         }

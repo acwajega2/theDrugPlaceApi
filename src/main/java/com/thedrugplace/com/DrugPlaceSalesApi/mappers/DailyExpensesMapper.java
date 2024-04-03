@@ -47,21 +47,21 @@ public class DailyExpensesMapper {
      */
     public DailyExpenses dtoToEntity(DailyExpensesDto dailyExpensesDto) throws ParseException {
         DailyExpenses dailyExpenses = new DailyExpenses();
-        dailyExpenses.setExpenseAmount(dailyExpensesDto.getExpenseAmount());
-        dailyExpenses.setExpenseCategory(dailyExpensesDto.getExpenseCategory());
+        dailyExpenses.setExpense_amount(dailyExpensesDto.getExpenseAmount());
+        dailyExpenses.setExpense_category(dailyExpensesDto.getExpenseCategory());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dailyExpenses.setExpenseDate(dateFormat.parse(dailyExpensesDto.getExpenseDate()));
-        dailyExpenses.setReceiptImageUrl(dailyExpensesDto.getReceiptImageUrl());
+        dailyExpenses.setExpense_date(dateFormat.parse(dailyExpensesDto.getExpenseDate()));
+        dailyExpenses.setReceipt_image_url(dailyExpensesDto.getReceiptImageUrl());
         dailyExpenses.setBranch(getBranchByCode(dailyExpensesDto.getBranchCode()));
         dailyExpenses.setStaff(getStaffBYPhone(dailyExpensesDto.getStaffPhone()));
-        dailyExpenses.setTransactionReference(dailyExpensesDto.getTransactionReference());
-        dailyExpenses.setCreatedAt(LocalDateTime.now());
+        dailyExpenses.setTransaction_reference(dailyExpensesDto.getTransactionReference());
+        dailyExpenses.setCreated_at(LocalDateTime.now());
         return dailyExpenses;
     }
 
     private Branch getBranchByCode(String branchCode) {
 
-        Branch branch = branchRepository.findByBranchCode(branchCode);
+        Branch branch = branchRepository.findBranchByBranch_code(branchCode);
         if (branch == null) {
             throw new CustomException("Branch not found");
         }

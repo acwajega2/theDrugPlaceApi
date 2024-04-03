@@ -79,7 +79,7 @@
             <column name="sale_date" type="DATE">
                 <constraints nullable="false" />
             </column>
-            <column name="saleAmount" type="DOUBLE">
+            <column name="sale_amount" type="DOUBLE">
                 <constraints nullable="false" />
             </column>
             <column name="payment_method" type="VARCHAR(255)">
@@ -133,7 +133,7 @@
     <!-- Create staff_salaries table -->
     <changeSet id="create-table-staff-salaries" author="Chris Wajega">
         <createTable tableName="staff_salaries">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="staff_salary_id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_STAFF_SALARIES" />
             </column>
             <column name="staff_id" type="BIGINT">
@@ -164,7 +164,7 @@
                 baseColumnNames="staff_id"
                 constraintName="FK_STAFF_SALARIES_STAFF"
                 referencedTableName="staff"
-                referencedColumnNames="staffId"
+                referencedColumnNames="staff_id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"
         />
@@ -177,7 +177,7 @@
                 baseColumnNames="branch_id"
                 constraintName="FK_STAFF_SALARIES_BRANCH"
                 referencedTableName="branches"
-                referencedColumnNames="branchId"
+                referencedColumnNames="branch_id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"
         />
@@ -191,7 +191,7 @@
                 baseColumnNames="branch_id"
                 constraintName="FK_STAFFSALARIES_BRANCH"
                 referencedTableName="branches"
-                referencedColumnNames="branchId"
+                referencedColumnNames="branch_id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"
         />
@@ -204,7 +204,7 @@
                 baseColumnNames="staff_id"
                 constraintName="FK_DAILYEXPENSES_STAFF"
                 referencedTableName="staff"
-                referencedColumnNames="staffId"
+                referencedColumnNames="staff_id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"
         />
@@ -216,7 +216,7 @@
                 baseColumnNames="branch_id"
                 constraintName="FK_DAILYEXPENSES_BRANCH"
                 referencedTableName="branches"
-                referencedColumnNames="branchId"
+                referencedColumnNames="branch_id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"
         />
@@ -229,7 +229,7 @@
                 baseColumnNames="staff_id"
                 constraintName="FK_DAILYSALES_STAFF"
                 referencedTableName="staff"
-                referencedColumnNames="staffId"
+                referencedColumnNames="staff_id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"
         />
@@ -241,7 +241,7 @@
                 baseColumnNames="branch_id"
                 constraintName="FK_DAILYSALES_BRANCH"
                 referencedTableName="branches"
-                referencedColumnNames="branchId"
+                referencedColumnNames="branch_id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"
         />
@@ -254,7 +254,7 @@
                 baseColumnNames="branch_id"
                 constraintName="FK_STAFF_BRANCH"
                 referencedTableName="branches"
-                referencedColumnNames="branchId"
+                referencedColumnNames="branch_id"
                 onDelete="CASCADE"
                 onUpdate="CASCADE"
         />

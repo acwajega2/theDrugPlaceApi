@@ -2,6 +2,7 @@ package com.thedrugplace.com.DrugPlaceSalesApi.interfaces;
 
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.branch.BranchDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.branch.BranchProfitDto;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public interface BranchService {
      *
      * @return A list of branch DTOs.
      */
+    @Query("SELECT b from Branch b")
     List<BranchDto> getAllBranches();
 
     /**

@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 public class StaffSalary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "staff_salary_id")
+    private Long staff_salary_id;
 
     /**
      * The staff member associated with this salary record.
@@ -28,12 +29,14 @@ public class StaffSalary {
     /**
      * The amount of the staff member's salary.
      */
+    @Column(name = "amount")
     private double amount;
 
     /**
      * The date when the salary payment was made.
      */
-    private LocalDate paymentDate;
+    @Column(name = "payment_date")
+    private LocalDate payment_date;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "branch_id") // Adjust the column name as per your schema
@@ -41,13 +44,13 @@ public class StaffSalary {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     @Column(name = "transaction_reference")
-    private String transactionReference;
+    private String transaction_reference;
 
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now(); // Set the current date and time
+        created_at = LocalDateTime.now(); // Set the current date and time
     }
 }

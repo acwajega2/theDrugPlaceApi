@@ -35,7 +35,14 @@ public class DailySalesMapper {
      * @return The corresponding DailySalesDto.
      */
     public DailySalesDto entityToDto(DailySales dailySales) {
-        return modelMapper.map(dailySales, DailySalesDto.class);
+        DailySalesDto dailySalesDto = new DailySalesDto();
+        dailySalesDto.setSaleAmount(dailySales.getSale_amount());
+        dailySalesDto.setSaleDate(dailySales.getSale_date().toString());
+        dailySalesDto.setBranchCode(dailySales.getBranch().getBranch_code());
+        dailySalesDto.setStaffPhone(dailySales.getStaff().getStaff_phone());
+        dailySalesDto.setPaymentMethod(dailySales.getPayment_method());
+        dailySalesDto.setTransactionReference(dailySales.getTransaction_reference());
+        return dailySalesDto;
     }
 
     /**
@@ -46,21 +53,21 @@ public class DailySalesMapper {
      */
     public DailySales dtoToEntity(DailySalesDto dailySalesDto) throws ParseException {
         DailySales dailySales = new DailySales();
-        dailySales.setSaleAmount(dailySales.getSaleAmount());
+        dailySales.setSale_amount(dailySales.getSale_amount());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dailySales.setSaleAmount(dailySalesDto.getSaleAmount());
-        dailySales.setSaleDate(dateFormat.parse(dailySalesDto.getSaleDate()));
+        dailySales.setSale_amount(dailySalesDto.getSaleAmount());
+        dailySales.setSale_date(dateFormat.parse(dailySalesDto.getSaleDate()));
         dailySales.setBranch(getBranchByCode(dailySalesDto.getBranchCode()));
         dailySales.setStaff(getStaffBYPhone(dailySalesDto.getStaffPhone()));
-        dailySales.setPaymentMethod(dailySalesDto.getPaymentMethod());
-        dailySales.setTransactionReference(dailySalesDto.getTransactionReference());
-        dailySales.setCreatedAt(LocalDateTime.now());
+        dailySales.setPayment_method(dailySalesDto.getPaymentMethod());
+        dailySales.setTransaction_reference(dailySalesDto.getTransactionReference());
+        dailySales.setCreated_at(LocalDateTime.now());
         return dailySales;
     }
 
     private Branch getBranchByCode(String branchCode) {
 
-        Branch branch = branchRepository.findByBranchCode(branchCode);
+        Branch branch = branchRepository.findBranchByBranch_code(branchCode);
         if (branch == null) {
             throw new CustomException("Branch not found");
         }
