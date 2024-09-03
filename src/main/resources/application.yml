@@ -6,14 +6,14 @@ spring:
     change-log: classpath:db/changelog/db-changelog-master2.xml
 
   datasource:
-    url: ${DB_URL} # Use environment variables for database credentials
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${DB_URL:-jdbc:postgresql://localhost:5432/siitadb}  # Use environment variable or default to localhost connection
+    username: ${DB_USERNAME:-postgres}                         # Use environment variable or default to 'postgres'
+    password: ${DB_PASSWORD:-postgres}                         # Use environment variable or default to 'postgres'
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update # Automatically update the schema (consider using 'validate' in production)
+      ddl-auto: update  # Automatically update the schema (consider using 'validate' in production)
     show-sql: true
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -41,15 +41,15 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*" # Expose all endpoints
+        include: "*"  # Expose all endpoints
   endpoint:
     health:
-      show-details: always # Show detailed health information
+      show-details: always  # Show detailed health information
 
 jwt:
-  secret: ${JWT_SECRET_KEY} # Store your JWT secret key securely, use environment variables
-  expiration: ${JWT_EXPIRATION_TIME} # Expiration time for JWT tokens, e.g., 3600000 (1 hour)
+  secret: ${JWT_SECRET_KEY:-v2RhAqXB0f85N3k3Q6cRz2F9Szg8HsL3C3JQZ8jK1Ope5U7t8Vn4W6b9E0M2Yr6Q}  # Use environment variable or default to a hardcoded secret key
+  expiration: ${JWT_EXPIRATION_TIME:-3600000}  # Use environment variable or default to 1 hour (3600000 ms)
 
 # Optional Grafana configuration placeholder
 grafana:
-  url: ${GRAFANA_URL}
+  url: ${GRAFANA_URL:-http://localhost:3000}  # Use environment variable or default to localhost Grafana URL
