@@ -3,18 +3,17 @@ package com.thedrugplace.com.DrugPlaceSalesApi.services;
 import com.thedrugplace.com.DrugPlaceSalesApi.daos.Branch;
 import com.thedrugplace.com.DrugPlaceSalesApi.daos.DailySales;
 import com.thedrugplace.com.DrugPlaceSalesApi.daos.Staff;
-import com.thedrugplace.com.DrugPlaceSalesApi.dtos.staff.BestPerformingStaffDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.branch.BranchPerformanceDto;
+import com.thedrugplace.com.DrugPlaceSalesApi.dtos.sales.BranchSalesDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.sales.DailySalesDto;
+import com.thedrugplace.com.DrugPlaceSalesApi.dtos.staff.BestPerformingStaffDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.exceptions.CustomException;
 import com.thedrugplace.com.DrugPlaceSalesApi.interfaces.DailySalesService;
 import com.thedrugplace.com.DrugPlaceSalesApi.mappers.DailySalesMapper;
 import com.thedrugplace.com.DrugPlaceSalesApi.repos.DailySalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import com.thedrugplace.com.DrugPlaceSalesApi.dtos.sales.BranchSalesDto;
 import org.springframework.stereotype.Service;
-
 
 import java.text.ParseException;
 import java.util.Date;
@@ -36,7 +35,7 @@ public class DailySalesServiceImpl implements DailySalesService {
         try {
             var dailySales = dailySalesMapper.dtoToEntity(dailySalesDto);
 
-            if (dailySalesRepository.findByTransactionReference(dailySalesDto.getTransactionReference()) !=null){
+            if (dailySalesRepository.findByTransactionReference(dailySalesDto.getTransactionReference()) != null) {
                 throw new CustomException("Sale already recorded");
             }
             return dailySalesMapper.entityToDto(dailySalesRepository.save(dailySales));
@@ -124,6 +123,17 @@ public class DailySalesServiceImpl implements DailySalesService {
     }
 
     @Override
+    public List<DailySalesDto> getSalesByBranchCode(String branchCode) {
+        try {
+            List<DailySales> salesList = dailySalesRepository.findSalesByBranchCode(branchCode);
+            return salesList.stream().map(dailySalesMapper::entityToDto).collect(Collectors.toList());
+        } catch (DataAccessException ex) {
+            // Handle the exception or rethrow a custom exception
+            throw new CustomException("Failed to get daily sales by staff Branch Code: " + ex.getMessage());
+        }
+    }
+
+    @Override
     public List<BranchPerformanceDto> getBranchPerformanceByMonthAndYear() {
         try {
             List<Object[]> results = dailySalesRepository.findBranchPerformanceByMonthAndYear();
@@ -146,8 +156,8 @@ public class DailySalesServiceImpl implements DailySalesService {
 
 
     @Override
-    public List<BestPerformingStaffDto> getBestPerformingStaffByMonthAndYear(){
-        try{
+    public List<BestPerformingStaffDto> getBestPerformingStaffByMonthAndYear() {
+        try {
             List<Object[]> results = dailySalesRepository.findBestPerformingStaffByMonthAndYear();
             return results.stream()
                     .map(result -> {

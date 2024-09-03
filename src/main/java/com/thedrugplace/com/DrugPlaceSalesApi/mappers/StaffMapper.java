@@ -37,6 +37,7 @@ public class StaffMapper {
         staffDto.setHireDate(staff.getHire_date().toString());
         staffDto.setStaffPhone(staff.getStaff_phone());
         staffDto.setBranchCode(staff.getBranch().getBranch_code());
+        staffDto.setUsername(staff.getUsername());
         return staffDto;
     }
 
@@ -56,12 +57,12 @@ public class StaffMapper {
         staff.setHire_date(dateFormat.parse(staffDto.getHireDate()));
         staff.setBranch(getBranchByCode(staffDto.getBranchCode()));
         staff.setStaff_role(staffDto.getStaffRole());
-
+        staff.setUsername(staffDto.getStaffPhone());
+        staff.setPassword(staffDto.getStaffPhone());
         return staff;
     }
 
     private Branch getBranchByCode(String branchCode) {
-
         Branch branch = branchRepository.findBranchByBranch_code(branchCode);
         if (branch == null) {
             throw new CustomException("Branch not found");

@@ -36,7 +36,15 @@ public class DailyExpensesMapper {
      * @return The corresponding DailyExpensesDto.
      */
     public DailyExpensesDto entityToDto(DailyExpenses dailyExpenses) {
-        return modelMapper.map(dailyExpenses, DailyExpensesDto.class);
+        DailyExpensesDto dailyExpensesDto = new DailyExpensesDto();
+        dailyExpensesDto.setExpenseAmount(dailyExpenses.getExpense_amount());
+        dailyExpensesDto.setExpenseCategory(dailyExpenses.getExpense_category());
+        dailyExpensesDto.setBranchCode(dailyExpenses.getBranch().getBranch_code());
+        dailyExpensesDto.setStaffPhone(dailyExpenses.getStaff().getStaff_phone());
+        dailyExpensesDto.setTransactionReference(dailyExpenses.getTransaction_reference());
+        dailyExpensesDto.setReceiptImageUrl(dailyExpenses.getReceipt_image_url());
+        dailyExpensesDto.setExpenseDate(dailyExpenses.getExpense_date().toString());
+        return dailyExpensesDto;
     }
 
     /**
@@ -56,6 +64,7 @@ public class DailyExpensesMapper {
         dailyExpenses.setStaff(getStaffBYPhone(dailyExpensesDto.getStaffPhone()));
         dailyExpenses.setTransaction_reference(dailyExpensesDto.getTransactionReference());
         dailyExpenses.setCreated_at(LocalDateTime.now());
+        System.out.println("New Daily Expense DTO: " + dailyExpenses.toString());
         return dailyExpenses;
     }
 

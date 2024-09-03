@@ -1,5 +1,6 @@
 package com.thedrugplace.com.DrugPlaceSalesApi.beans;
 
+import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import java.util.logging.Logger;
  */
 @Configuration
 public class LiquibaseConfig {
+
     private static final Logger logger = Logger.getLogger(LiquibaseConfig.class.getName());
 
     @Value("${spring.liquibase.change-log}")
@@ -30,8 +32,8 @@ public class LiquibaseConfig {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(dataSource);
         liquibase.setChangeLog(changeLog);
-        // Add the liquibaseUpdateChecksums flag to recalculate checksums
-        liquibase.setContexts("liquibaseUpdateChecksums");
+        liquibase.setShouldRun(true);  // Enable Liquibase migrations to run
+        liquibase.setContexts(environment.getProperty("liquibase.contexts", "default")); // Use default or environment-specific contexts
 
         // Log the Liquibase configuration
         logger.info("Initializing Liquibase with change log: " + changeLog);
@@ -41,8 +43,9 @@ public class LiquibaseConfig {
         try {
             liquibase.afterPropertiesSet(); // Initialize Liquibase
             logger.info("Liquibase initialization successful.");
-        } catch (Exception e) {
+        } catch (LiquibaseException e) {
             logger.severe("Liquibase initialization failed: " + e.getMessage());
+            throw new RuntimeException("Liquibase initialization error", e); // Rethrow as runtime exception to prevent app from starting
         }
 
         return liquibase;

@@ -33,6 +33,7 @@ public class DailyExpensesController {
     @PostMapping
     public ResponseEntity<DailyExpensesDto> createDailyExpenses(@RequestBody DailyExpensesDto dailyExpensesDto) {
         logger.info("Creating a new daily expense entry.");
+        System.out.println(dailyExpensesDto.toString());
         DailyExpensesDto createdExpenses = dailyExpensesService.createDailyExpenses(dailyExpensesDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdExpenses);
     }
@@ -71,7 +72,7 @@ public class DailyExpensesController {
     /**
      * Update a daily expense entry by its ID.
      *
-     * @param expenseId       The ID of the daily expenses entry to update.
+     * @param expenseId        The ID of the daily expenses entry to update.
      * @param dailyExpensesDto The updated daily expenses information.
      * @return ResponseEntity with the updated daily expenses and HTTP status 200 (OK) if updated,
      * or 404 (Not Found) if the daily expenses entry was not found.
@@ -123,5 +124,12 @@ public class DailyExpensesController {
         logger.info("Getting branch expenses performance by month and year.");
         List<BranchExpensesPerformanceDto> branchExpensesPerformance = dailyExpensesService.getBranchExpensesPerformanceByMonthAndYear();
         return ResponseEntity.status(HttpStatus.OK).body(branchExpensesPerformance);
+    }
+
+    @GetMapping("/branch-expenses/{branchCode}")
+    public ResponseEntity<List<DailyExpensesDto>> getAllDailySalesByBranchCode(@PathVariable String branchCode) {
+        logger.info("Getting branch Expenses by branch code");
+        List<DailyExpensesDto> branchExpenses = dailyExpensesService.getBranchExepnsesByBranchCode(branchCode);
+        return ResponseEntity.status(HttpStatus.OK).body(branchExpenses);
     }
 }

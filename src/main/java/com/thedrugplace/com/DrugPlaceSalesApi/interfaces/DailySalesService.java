@@ -1,10 +1,9 @@
 package com.thedrugplace.com.DrugPlaceSalesApi.interfaces;
 
-import com.thedrugplace.com.DrugPlaceSalesApi.dtos.staff.BestPerformingStaffDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.branch.BranchPerformanceDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.sales.BranchSalesDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.sales.DailySalesDto;
-import org.springframework.stereotype.Service;
+import com.thedrugplace.com.DrugPlaceSalesApi.dtos.staff.BestPerformingStaffDto;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ public interface DailySalesService {
     /**
      * Update an existing daily sales entry.
      *
-     * @param salesId The unique identifier of the daily sales entry to be updated.
+     * @param salesId       The unique identifier of the daily sales entry to be updated.
      * @param dailySalesDto The DTO representing the updated daily sales entry data.
      * @return The updated daily sales entry DTO, or null if the entry doesn't exist.
      */
@@ -60,6 +59,8 @@ public interface DailySalesService {
      * @return A list of DailySalesDto representing daily sales entries with branch details.
      */
     List<DailySalesDto> getSalesByStaffPhoneNumberWithBranchDetails(String phoneNumber);
+
+    List<DailySalesDto> getSalesByBranchCode(String branchCode);
 
     /**
      * Get a list of branch sales with staff details, ordered by date in descending order.

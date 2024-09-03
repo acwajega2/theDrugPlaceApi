@@ -3,7 +3,6 @@ package com.thedrugplace.com.DrugPlaceSalesApi.interfaces;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.expenses.BranchExpensesDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.expenses.BranchExpensesPerformanceDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.expenses.DailyExpensesDto;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -39,7 +38,7 @@ public interface DailyExpensesService {
     /**
      * Update an existing daily expenses entry.
      *
-     * @param expenseId The unique identifier of the daily expenses entry to be updated.
+     * @param expenseId        The unique identifier of the daily expenses entry to be updated.
      * @param dailyExpensesDto The DTO representing the updated daily expenses entry data.
      * @return The updated daily expenses entry DTO, or null if the entry doesn't exist.
      */
@@ -51,6 +50,11 @@ public interface DailyExpensesService {
      * @param expenseId The unique identifier of the daily expenses entry to be deleted.
      */
     void deleteDailyExpenses(Long expenseId);
+
+
+    // Get Expenses by Branch Code
+    List<DailyExpensesDto> getBranchExepnsesByBranchCode(String branchCode);
+
 
     /**
      * Get a list of branch expenses with staff details, ordered by date in descending order.

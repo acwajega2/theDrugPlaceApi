@@ -30,7 +30,7 @@ public class StaffServiceImpl implements StaffService {
     public StaffDto createStaff(StaffDto staffDto) {
         try {
             var staff = staffMapper.dtoToEntity(staffDto);
-            if (staffRepository.findByStaffPhone(staff.getStaff_phone()) !=null){
+            if (staffRepository.findByStaffPhone(staff.getStaff_phone()) != null) {
                 throw new CustomException("Staff already saved");
             }
             staffRepository.save(staff);
@@ -91,6 +91,11 @@ public class StaffServiceImpl implements StaffService {
     public List<StaffDto> getStaffByBranch_code(String branchCode) {
         List<Staff> staffList = staffRepository.findByBranch_BranchCode(branchCode);
         return staffList.stream().map(staffMapper::entityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Staff getStaffByUsername(String username) {
+        return staffRepository.findByUsername(username);
     }
 
 

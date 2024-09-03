@@ -69,4 +69,7 @@ public interface StaffService {
      */
     @Query("SELECT a,b.branch_code Staff a JOIN a.branch b WHERE b.branch_code = :branchCode")
     List<StaffDto> getStaffByBranch_code(@Param("branchCode") String branchCode);
+
+    @Query("SELECT * from Staff where username = :username")
+    Staff getStaffByUsername(@Param("username") String username);
 }

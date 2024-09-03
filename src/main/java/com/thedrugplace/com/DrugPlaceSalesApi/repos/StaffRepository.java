@@ -32,4 +32,12 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
     @Query("SELECT a FROM Staff a WHERE a.staff_phone = :staffPhone")
     Staff findByStaffPhone(@Param("staffPhone") String staffPhone);
 
+    /**
+     * Find a staff member by username.
+     *
+     * @param username The username to search for.
+     * @return The Staff object matching the username.
+     */
+    Staff findByUsername(String username);
+
 }

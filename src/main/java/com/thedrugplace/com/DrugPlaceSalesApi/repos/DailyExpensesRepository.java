@@ -39,6 +39,11 @@ public interface DailyExpensesRepository extends JpaRepository<DailyExpenses, Lo
             "ORDER BY year DESC, month DESC, totalExpenses DESC")
     List<Object[]> findBranchExpensesPerformanceByMonthAndYear();
 
+
+    @Query("SELECT de FROM DailyExpenses de JOIN FETCH de.staff s JOIN FETCH de.branch b WHERE b.branch_code = :branchCode")
+    List<DailyExpenses> findExpensesByBranchCode(@Param("branchCode") String branchCode);
+
+
     @Query("SELECT b FROM DailyExpenses b WHERE b.transaction_reference = :transactionReference")
-    DailyExpenses findByTransactionReference(@Param("transactionReference")  String transactionReference);
+    DailyExpenses findByTransactionReference(@Param("transactionReference") String transactionReference);
 }

@@ -5,159 +5,185 @@
 
     <!-- Create branches table -->
     <changeSet id="create-table-branches" author="Chris Wajega">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table 'branches' already exists">
+            <not>
+                <tableExists tableName="branches"/>
+            </not>
+        </preConditions>
         <createTable tableName="branches">
             <column name="branch_id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_BRANCHES" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_BRANCHES"/>
             </column>
             <column name="branch_name" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="branch_location" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="branch_code" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="branch_manager_id" type="INT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="branch_opening_date" type="DATE">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-
-
 
     <!-- Create dailyExpenses table -->
     <changeSet id="create-table-dailyExpenses" author="Chris Wajega">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table 'daily_expenses' already exists">
+            <not>
+                <tableExists tableName="daily_expenses"/>
+            </not>
+        </preConditions>
         <createTable tableName="daily_expenses">
             <column name="expense_id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_DAILY_EXPENSES" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_DAILY_EXPENSES"/>
             </column>
             <column name="staff_id" type="BIGINT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="expense_date" type="DATE">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="expense_amount" type="DOUBLE">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="transaction_reference" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="expense_category" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="receipt_image_url" type="VARCHAR(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="created_at" type="TIMESTAMP">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="branch_id" type="BIGINT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-
-
 
     <!-- Create dailySales table -->
     <changeSet id="create-table-dailySales" author="Chris Wajega">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table 'daily_sales' already exists">
+            <not>
+                <tableExists tableName="daily_sales"/>
+            </not>
+        </preConditions>
         <createTable tableName="daily_sales">
             <column name="sales_id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_DAILY_SALES" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_DAILY_SALES"/>
             </column>
             <column name="staff_id" type="BIGINT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="sale_date" type="DATE">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="sale_amount" type="DOUBLE">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="payment_method" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="transaction_reference" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="branch_id" type="BIGINT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-
 
     <!-- Create staff table -->
     <changeSet id="create-table-staff" author="Chris Wajega">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table 'staff' already exists">
+            <not>
+                <tableExists tableName="staff"/>
+            </not>
+        </preConditions>
         <createTable tableName="staff">
             <column name="staff_id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_STAFF" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_STAFF"/>
             </column>
             <column name="branch_id" type="BIGINT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="staff_name" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
             </column>
             <column name="staff_role" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="staff_email" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="staff_phone" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="hire_date" type="DATE">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-
-
 
     <!-- Create staff_salaries table -->
     <changeSet id="create-table-staff-salaries" author="Chris Wajega">
+        <preConditions onFail="MARK_RAN" onFailMessage="Table 'staff_salaries' already exists">
+            <not>
+                <tableExists tableName="staff_salaries"/>
+            </not>
+        </preConditions>
         <createTable tableName="staff_salaries">
             <column name="staff_salary_id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_STAFF_SALARIES" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_STAFF_SALARIES"/>
             </column>
             <column name="staff_id" type="BIGINT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="amount" type="DECIMAL(10,2)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="transaction_reference" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="payment_date" type="DATE">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="branch_id" type="BIGINT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
-    <!-- Create foreign key for staff_salaries association with staff -->
+    <!-- Add foreign key constraints -->
+    <!-- Only include preconditions in constraints if necessary, typically not needed for FK creation -->
+
     <changeSet id="add-foreign-key-staffSalaries-staff" author="Chris Wajega">
         <addForeignKeyConstraint
                 baseTableName="staff_salaries"
@@ -166,11 +192,9 @@
                 referencedTableName="staff"
                 referencedColumnNames="staff_id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"
-        />
+                onUpdate="CASCADE"/>
     </changeSet>
 
-    <!-- Create foreign key for staff_salaries association with branches -->
     <changeSet id="add-foreign-key-staffSalaries-branch" author="Chris Wajega">
         <addForeignKeyConstraint
                 baseTableName="staff_salaries"
@@ -179,25 +203,9 @@
                 referencedTableName="branches"
                 referencedColumnNames="branch_id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"
-        />
+                onUpdate="CASCADE"/>
     </changeSet>
 
-
-
-    <changeSet id="add-foreign-key-staffSalaries" author="Chris Wajega">
-        <addForeignKeyConstraint
-                baseTableName="staff_salaries"
-                baseColumnNames="branch_id"
-                constraintName="FK_STAFFSALARIES_BRANCH"
-                referencedTableName="branches"
-                referencedColumnNames="branch_id"
-                onDelete="CASCADE"
-                onUpdate="CASCADE"
-        />
-    </changeSet>
-
-    <!-- Create foreign keys for dailyExpenses association with staff and branches -->
     <changeSet id="add-foreign-key-dailyExpenses-staff" author="Chris Wajega">
         <addForeignKeyConstraint
                 baseTableName="daily_expenses"
@@ -206,8 +214,7 @@
                 referencedTableName="staff"
                 referencedColumnNames="staff_id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"
-        />
+                onUpdate="CASCADE"/>
     </changeSet>
 
     <changeSet id="add-foreign-key-dailyExpenses-branch" author="Chris Wajega">
@@ -218,11 +225,9 @@
                 referencedTableName="branches"
                 referencedColumnNames="branch_id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"
-        />
+                onUpdate="CASCADE"/>
     </changeSet>
 
-    <!-- Create foreign keys for dailySales association with staff and branches -->
     <changeSet id="add-foreign-key-dailySales-staff" author="Chris Wajega">
         <addForeignKeyConstraint
                 baseTableName="daily_sales"
@@ -231,8 +236,7 @@
                 referencedTableName="staff"
                 referencedColumnNames="staff_id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"
-        />
+                onUpdate="CASCADE"/>
     </changeSet>
 
     <changeSet id="add-foreign-key-dailySales-branch" author="Chris Wajega">
@@ -243,11 +247,9 @@
                 referencedTableName="branches"
                 referencedColumnNames="branch_id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"
-        />
+                onUpdate="CASCADE"/>
     </changeSet>
 
-    <!-- Create foreign key for staff association with branches -->
     <changeSet id="add-foreign-key-staff-branch" author="Chris Wajega">
         <addForeignKeyConstraint
                 baseTableName="staff"
@@ -256,9 +258,36 @@
                 referencedTableName="branches"
                 referencedColumnNames="branch_id"
                 onDelete="CASCADE"
-                onUpdate="CASCADE"
-        />
+                onUpdate="CASCADE"/>
     </changeSet>
 
+
+    <!-- Insert initial data into branches table -->
+    <changeSet id="insert-initial-branch" author="Chris Wajega">
+        <insert tableName="branches">
+            <column name="branch_id" value="1"/>
+            <column name="branch_name" value="HQ"/>
+            <column name="branch_location" value="Main Street"/>
+            <column name="branch_code" value="HQ001"/>
+            <column name="branch_manager_id" value="1"/>
+            <column name="branch_opening_date" value="2023-01-01"/>
+            <column name="created_at" value="2024-09-01T12:00:00"/>
+        </insert>
+    </changeSet>
+
+    <!-- Insert initial data into staff table with unique IDs -->
+    <changeSet id="insert-initial-staff-1" author="Chris Wajega">
+        <insert tableName="staff">
+            <column name="branch_id" value="1"/> <!-- Assuming branch_id '1' corresponds to 'HQ' -->
+            <column name="staff_name" value="Siita Health Admin"/>
+            <column name="username" value="admin"/>
+            <column name="password" value="admin"/> <!-- Example hashed password using BCrypt -->
+            <column name="staff_role" value="Admin"/>
+            <column name="staff_email" value="chris@siitapharm.org"/>
+            <column name="staff_phone" value="0772123017"/>
+            <column name="hire_date" value="2023-01-01"/>
+            <column name="created_at" value="2024-09-01T12:00:00"/>
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>

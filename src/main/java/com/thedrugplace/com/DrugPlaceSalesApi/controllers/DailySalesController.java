@@ -33,6 +33,7 @@ public class DailySalesController {
     @PostMapping
     public ResponseEntity<DailySalesDto> createDailySales(@RequestBody DailySalesDto dailySalesDto) {
         logger.info("Creating a new daily sales entry.");
+        System.out.println(dailySalesDto.toString());
         DailySalesDto createdSales = dailySalesService.createDailySales(dailySalesDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSales);
     }
@@ -110,6 +111,13 @@ public class DailySalesController {
     public ResponseEntity<List<BranchSalesDto>> getBranchSalesWithStaffDetailsOrderByDateDesc() {
         logger.info("Getting branch sales with staff details ordered by date.");
         List<BranchSalesDto> branchSales = dailySalesService.getBranchSalesWithStaffDetailsOrderByDateDesc();
+        return ResponseEntity.status(HttpStatus.OK).body(branchSales);
+    }
+
+    @GetMapping("/branch-sales/{branchCode}")
+    public ResponseEntity<List<DailySalesDto>> getAllDailySalesByBranchCode(@PathVariable String branchCode) {
+        logger.info("Getting branch sales by branch code");
+        List<DailySalesDto> branchSales = dailySalesService.getSalesByBranchCode(branchCode);
         return ResponseEntity.status(HttpStatus.OK).body(branchSales);
     }
 

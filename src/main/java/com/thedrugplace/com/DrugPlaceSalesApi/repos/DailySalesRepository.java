@@ -25,6 +25,15 @@ public interface DailySalesRepository extends JpaRepository<DailySales, Long> {
             "WHERE s.staff_phone = :staffPhone")
     List<DailySales> findSalesByStaffPhoneNumberWithBranchDetails(@Param("staffPhone") String staffPhone);
 
+
+    // Get Sales by Branch Code
+    @Query("SELECT ds FROM DailySales ds " +
+            "JOIN FETCH ds.staff s " +
+            "JOIN FETCH s.branch b " +
+            "WHERE b.branch_code = :branchCode")
+    List<DailySales> findSalesByBranchCode(@Param("branchCode") String branchCode);
+
+
     /**
      * Custom query to retrieve branch sales with staff details, ordered by date in descending order.
      *

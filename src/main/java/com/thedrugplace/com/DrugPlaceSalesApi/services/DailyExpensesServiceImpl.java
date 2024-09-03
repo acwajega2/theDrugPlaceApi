@@ -33,7 +33,7 @@ public class DailyExpensesServiceImpl implements DailyExpensesService {
     public DailyExpensesDto createDailyExpenses(DailyExpensesDto dailyExpensesDto) {
         try {
             var dailyExpenses = dailyExpensesMapper.dtoToEntity(dailyExpensesDto);
-            if (dailyExpensesRepository.findByTransactionReference(dailyExpensesDto.getTransactionReference()) !=null){
+            if (dailyExpensesRepository.findByTransactionReference(dailyExpensesDto.getTransactionReference()) != null) {
                 throw new CustomException("Expense already recorded");
             }
             return dailyExpensesMapper.entityToDto(dailyExpensesRepository.save(dailyExpenses));
@@ -90,6 +90,18 @@ public class DailyExpensesServiceImpl implements DailyExpensesService {
     }
 
     @Override
+    public List<DailyExpensesDto> getBranchExepnsesByBranchCode(String branchCode) {
+        try {
+            List<DailyExpenses> dailyExpensesList = dailyExpensesRepository.findExpensesByBranchCode(branchCode);
+            return dailyExpensesList.stream().map(dailyExpensesMapper::entityToDto).collect(Collectors.toList());
+        } catch (DataAccessException ex) {
+            // Handle the exception or rethrow a custom exception
+            throw new CustomException("Failed to get  daily expenses: " + ex.getMessage());
+        }
+    }
+
+
+    @Override
     public List<BranchExpensesDto> getBranchExpensesWithStaffDetailsOrderByDateDesc() {
         try {
             List<Object[]> results = dailyExpensesRepository.findBranchExpensesWithStaffDetailsOrderByDateDesc();
@@ -110,7 +122,7 @@ public class DailyExpensesServiceImpl implements DailyExpensesService {
 
     @Override
     public List<BranchExpensesPerformanceDto> getBranchExpensesPerformanceByMonthAndYear() {
-        try{
+        try {
             List<Object[]> results = dailyExpensesRepository.findBranchExpensesPerformanceByMonthAndYear();
             return results.stream()
                     .map(result -> {
@@ -122,7 +134,7 @@ public class DailyExpensesServiceImpl implements DailyExpensesService {
                         return new BranchExpensesPerformanceDto(branch, year, month, totalExpenses, averageExpenses);
                     })
                     .collect(Collectors.toList());
-        }catch (DataAccessException ex) {
+        } catch (DataAccessException ex) {
             // Handle the exception or rethrow a custom exception
             throw new CustomException("Failed to get getBranchExpensesPerformanceByMonthAndYear: " + ex.getMessage());
         }
