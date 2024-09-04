@@ -6,9 +6,9 @@ spring:
     change-log: classpath:db/changelog/db-changelog-master2.xml
 
   datasource:
-    url: ${DB_URL:-jdbc:postgresql://localhost:5432/siitadb}  # Use environment variable or default to localhost connection
-    username: ${DB_USERNAME:-postgres}                         # Use environment variable or default to 'postgres'
-    password: ${DB_PASSWORD:-postgres}                         # Use environment variable or default to 'postgres'
+    url: jdbc:postgresql://localhost:5432/siitadb  # Use environment variable or default to localhost connection
+    username: postgres                        # Use environment variable or default to 'postgres'
+    password: postgres                       # Use environment variable or default to 'postgres'
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -52,4 +52,4 @@ jwt:
 
 # Optional Grafana configuration placeholder
 grafana:
-  url: ${GRAFANA_URL:-http://localhost:3000}  # Use environment variable or default to localhost Grafana URL
+  url: http://localhost:3000 # Use environment variable or default to localhost Grafana URL
