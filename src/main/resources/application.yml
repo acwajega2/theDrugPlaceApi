@@ -47,8 +47,8 @@ management:
       show-details: always  # Show detailed health information
 
 jwt:
-  secret: ${JWT_SECRET_KEY:-v2RhAqXB0f85N3k3Q6cRz2F9Szg8HsL3C3JQZ8jK1Ope5U7t8Vn4W6b9E0M2Yr6Q}  # Use environment variable or default to a hardcoded secret key
-  expiration: ${JWT_EXPIRATION_TIME:-3600000}  # Use environment variable or default to 1 hour (3600000 ms)
+  secret: v2RhAqXB0f85N3k3Q6cRz2F9Szg8HsL3C3JQZ8jK1Ope5U7t8Vn4W6b9E0M2Yr6Q  # Use environment variable or default to a hardcoded secret key
+  expiration: 3600000  # Use environment variable or default to 1 hour (3600000 ms)
 
 # Optional Grafana configuration placeholder
 grafana:
