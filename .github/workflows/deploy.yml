@@ -21,6 +21,7 @@ jobs:
 
       - name: Inject environment variables from GitHub Secrets
         run: |
+          echo ${{ secrets.POSTGRES_DB_URL }}"
           echo "POSTGRES_DB_URL=${{ secrets.POSTGRES_DB_URL }}" >> $GITHUB_ENV
           echo "POSTGRES_DB_USERNAME=${{ secrets.POSTGRES_DB_USERNAME }}" >> $GITHUB_ENV
           echo "POSTGRES_DB_PASSWORD=${{ secrets.POSTGRES_DB_PASSWORD }}" >> $GITHUB_ENV
