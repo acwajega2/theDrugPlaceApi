@@ -19,30 +19,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17' # Adjust the Java version as needed
 
-      - name: Inject environment variables from GitHub Secrets
-        run: |
-          echo ${{ secrets.POSTGRES_DB_URL }}
-          echo "POSTGRES_DB_URL=${{ secrets.POSTGRES_DB_URL }}" >> $GITHUB_ENV
-          echo "POSTGRES_DB_USERNAME=${{ secrets.POSTGRES_DB_USERNAME }}" >> $GITHUB_ENV
-          echo "POSTGRES_DB_PASSWORD=${{ secrets.POSTGRES_DB_PASSWORD }}" >> $GITHUB_ENV
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-          echo "K2_SMS_USERNAME=${{ secrets.K2_SMS_USERNAME }}" >> $GITHUB_ENV
-          echo "K2_SMS_PASSWORD=${{ secrets.K2_SMS_PASSWORD }}" >> $GITHUB_ENV
-          echo "TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}" >> $GITHUB_ENV
-          echo "TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}" >> $GITHUB_ENV
-          echo "TWILIO_WHATSAPP_FROM=${{ secrets.TWILIO_WHATSAPP_FROM }}" >> $GITHUB_ENV
-
       - name: Build the Spring application
-        env:
-          POSTGRES_DB_URL: ${{ secrets.POSTGRES_DB_URL }}
-          POSTGRES_DB_USERNAME: ${{ secrets.POSTGRES_DB_USERNAME }}
-          POSTGRES_DB_PASSWORD: ${{ secrets.POSTGRES_DB_PASSWORD }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          K2_SMS_USERNAME: ${{ secrets.K2_SMS_USERNAME }}
-          K2_SMS_PASSWORD: ${{ secrets.K2_SMS_PASSWORD }}
-          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-          TWILIO_WHATSAPP_FROM: ${{ secrets.TWILIO_WHATSAPP_FROM }}
         run: mvn clean install -DskipTests
 
       - name: Find siita-server.jar location
@@ -73,31 +50,9 @@ jobs:
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
           cat ssh_key 
 
-      - name: SSH into AWS instance and set environment variables
+      - name: SSH into AWS instance and set permissions
         run: |
-          ssh -t -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
-            export MY_ENV_VAR="some_value"
-            echo "MY_ENV_VAR is set to: \$MY_ENV_VAR"
-            export POSTGRES_DB_URL="${{ secrets.POSTGRES_DB_URL }}"
-            echo "POSTGRES_DB_URL is set to: \$POSTGRES_DB_URL"
-            export POSTGRES_DB_USERNAME="${{ secrets.POSTGRES_DB_USERNAME }}"
-            echo "POSTGRES_DB_USERNAME is set to: \$POSTGRES_DB_USERNAME"
-            export POSTGRES_DB_PASSWORD="${{ secrets.POSTGRES_DB_PASSWORD }}"
-            echo "POSTGRES_DB_PASSWORD is set to: \$POSTGRES_DB_PASSWORD"
-            export JWT_SECRET="${{ secrets.JWT_SECRET }}"
-            echo "JWT_SECRET is set to: \$JWT_SECRET"
-            export K2_SMS_USERNAME="${{ secrets.K2_SMS_USERNAME }}"
-            echo "K2_SMS_USERNAME is set to: \$K2_SMS_USERNAME"
-            export K2_SMS_PASSWORD="${{ secrets.K2_SMS_PASSWORD }}"
-            echo "K2_SMS_PASSWORD is set to: \$K2_SMS_PASSWORD"
-            export TWILIO_ACCOUNT_SID="${{ secrets.TWILIO_ACCOUNT_SID }}"
-            echo "TWILIO_ACCOUNT_SID is set to: \$TWILIO_ACCOUNT_SID"
-            export TWILIO_AUTH_TOKEN="${{ secrets.TWILIO_AUTH_TOKEN }}"
-            echo "TWILIO_AUTH_TOKEN is set to: \$TWILIO_AUTH_TOKEN"
-            export TWILIO_WHATSAPP_FROM="${{ secrets.TWILIO_WHATSAPP_FROM }}"
-            echo "TWILIO_WHATSAPP_FROM is set to: \$TWILIO_WHATSAPP_FROM"
-            echo "Environment variables set."
-          EOF
+          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "sudo chmod -R 777 /home/ubuntu/apps/*"
 
       - name: Check if the application is running
         run: |
@@ -117,10 +72,12 @@ jobs:
           echo "Terminating existing application."
           ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "pkill -f siita-server.jar"
 
+
       - name: Start the application
         run: |
-          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "nohup java -jar /home/ubuntu/apps/siita-server/siita-server.jar > /dev/null 2>&1 &"
+          ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "nohup java -jar /home/ubuntu/apps/siita-server/github/workspace/target/siita-server.jar > /dev/null 2>&1 &"
 
       - name: Wait for the application to start
         run: |
           sleep 10 # Adjust the sleep time based on your application's startup time
+
