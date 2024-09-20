@@ -63,6 +63,6 @@ sms:
     username: chriswajega06@gmail.com  # Use environment variable or replace with your username
     password: Elgonord!@200100  # Use environment variable or replace with your password
 twilio:
-  account-sid: "${TWILIO_ACCOUNT_SID}"
-  auth-token: "${TWILIO_AUTH_TOKEN}"
-  whatsapp-from: "${TWILIO_WHATSAPP_FROM}"
+  account-sid: "test"
+  auth-token: "test"
+  whatsapp-from: "test"
