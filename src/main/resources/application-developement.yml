@@ -3,34 +3,66 @@ spring:
     name: TheDrugPlaceManagementSoftware
 
   liquibase:
-    change-log: classpath:db/changelog/db-changelog-master.xml
+    change-log: classpath:db/changelog/db-changelog-master2.xml
 
   datasource:
-    url: ${YOUR_DB_URL}
-    username: ${YOUR_DB_USERNAME}
-    password: ${YOUR_DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/siitadb  # Use environment variable or default to localhost connection
+    username: postgres                        # Use environment variable or default to 'postgres'
+    password: postgres                       # Use environment variable or default to 'postgres'
+    driver-class-name: org.postgresql.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: update  # Automatically update the schema (consider using 'validate' in production)
     show-sql: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
   hibernate:
     naming:
       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
 
+  logging:
+    level:
+      org.springframework: DEBUG
+      org.springframework.boot: DEBUG
+
+  springfox:
+    documentation:
+      swagger-ui:
+        path: /custom-path/swagger-ui
+        enabled: true
+
+server:
+  port: 8008
 
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "*"  # Expose all endpoints
+  endpoint:
+    health:
+      show-details: always  # Show detailed health information
 
+jwt:
+  secret: v2RhAqXB0f85N3k3Q6cRz2F9Szg8HsL3C3JQZ8jK1Ope5U7t8Vn4W6b9E0M2Yr6Q  # Use environment variable or default to a hardcoded secret key
+  expiration: 3600000  # Use environment variable or default to 1 hour (3600000 ms)
+
+# Optional Grafana configuration placeholder
 grafana:
-  url: ${YOUR_GRAFANA_URL}
+  url: http://localhost:3000 # Use environment variable or default to localhost Grafana URL
 
-server:
-  port: 8008
+sms:
+  api:
+    balance:
+      url: https://sms.k2telecom.ug/index.php/api/balance
+    sendmessage:
+      url: https://sms.k2telecom.ug/index.php/api/sendmessage
+    username: chriswajega06@gmail.com  # Use environment variable or replace with your username
+    password: Elgonord!@200100  # Use environment variable or replace with your password
+twilio:
+  account-sid: "AC6507afc0ae861683725f40a78ba5f2af"
+  auth-token: "8eb77898466838e236b16abff6a82762"
+  whatsapp-from: "whatsapp:+18304770163" # Twilio WhatsApp number

@@ -3,17 +3,17 @@ spring:
     name: TheDrugPlaceManagementSoftware
 
   liquibase:
-    change-log: classpath:db/changelog/db-changelog-master.xml
+    change-log: classpath:db/changelog/db-changelog-master2.xml
 
   datasource:
-    url: ${DB_URL} # Use environment variables for database credentials
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/siitadb  # Use environment variable or default to localhost connection
+    username: postgres                        # Use environment variable or default to 'postgres'
+    password: postgres                       # Use environment variable or default to 'postgres'
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update # Automatically update the schema (consider using 'validate' in production)
+      ddl-auto: update  # Automatically update the schema (consider using 'validate' in production)
     show-sql: true
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -41,15 +41,28 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*" # Expose all endpoints
+        include: "*"  # Expose all endpoints
   endpoint:
     health:
-      show-details: always # Show detailed health information
+      show-details: always  # Show detailed health information
 
 jwt:
-  secret: ${JWT_SECRET_KEY} # Store your JWT secret key securely, use environment variables
-  expiration: ${JWT_EXPIRATION_TIME} # Expiration time for JWT tokens, e.g., 3600000 (1 hour)
+  secret: v2RhAqXB0f85N3k3Q6cRz2F9Szg8HsL3C3JQZ8jK1Ope5U7t8Vn4W6b9E0M2Yr6Q  # Use environment variable or default to a hardcoded secret key
+  expiration: 3600000  # Use environment variable or default to 1 hour (3600000 ms)
 
 # Optional Grafana configuration placeholder
 grafana:
-  url: ${GRAFANA_URL}
+  url: http://localhost:3000 # Use environment variable or default to localhost Grafana URL
+
+sms:
+  api:
+    balance:
+      url: https://sms.k2telecom.ug/index.php/api/balance
+    sendmessage:
+      url: https://sms.k2telecom.ug/index.php/api/sendmessage
+    username: chriswajega06@gmail.com  # Use environment variable or replace with your username
+    password: Elgonord!@200100  # Use environment variable or replace with your password
+twilio:
+  account-sid: "AC6507afc0ae861683725f40a78ba5f2af"
+  auth-token: "8eb77898466838e236b16abff6a82762"
+  whatsapp-from: "whatsapp:+14155238886" # Twilio WhatsApp number

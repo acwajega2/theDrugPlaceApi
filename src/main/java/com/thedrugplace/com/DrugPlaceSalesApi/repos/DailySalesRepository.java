@@ -74,4 +74,6 @@ public interface DailySalesRepository extends JpaRepository<DailySales, Long> {
 
     @Query("SELECT b FROM DailySales b WHERE transaction_reference =:transactionReference ")
     DailySales findByTransactionReference(@Param("transactionReference") String transactionReference);
+
+    
 }

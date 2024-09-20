@@ -53,3 +53,16 @@ jwt:
 # Optional Grafana configuration placeholder
 grafana:
   url: http://localhost:3000 # Use environment variable or default to localhost Grafana URL
+
+sms:
+  api:
+    balance:
+      url: https://sms.k2telecom.ug/index.php/api/balance
+    sendmessage:
+      url: https://sms.k2telecom.ug/index.php/api/sendmessage
+    username: chriswajega06@gmail.com  # Use environment variable or replace with your username
+    password: Elgonord!@200100  # Use environment variable or replace with your password
+twilio:
+  account-sid: "AC6507afc0ae861683725f40a78ba5f2af"
+  auth-token: "8eb77898466838e236b16abff6a82762"
+  whatsapp-from: "whatsapp:+18304770163" # Twilio WhatsApp number
