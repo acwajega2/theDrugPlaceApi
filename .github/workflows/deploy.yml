@@ -76,15 +76,15 @@ jobs:
       - name: SSH into AWS instance and set environment variables
         run: |
           ssh -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
-            export POSTGRES_DB_URL="${{ secrets.POSTGRES_DB_URL }}"
-            export POSTGRES_DB_USERNAME="${{ secrets.POSTGRES_DB_USERNAME }}"
-            export POSTGRES_DB_PASSWORD="${{ secrets.POSTGRES_DB_PASSWORD }}"
-            export JWT_SECRET="${{ secrets.JWT_SECRET }}"
-            export K2_SMS_USERNAME="${{ secrets.K2_SMS_USERNAME }}"
-            export K2_SMS_PASSWORD="${{ secrets.K2_SMS_PASSWORD }}"
-            export TWILIO_ACCOUNT_SID="${{ secrets.TWILIO_ACCOUNT_SID }}"
-            export TWILIO_AUTH_TOKEN="${{ secrets.TWILIO_AUTH_TOKEN }}"
-            export TWILIO_WHATSAPP_FROM="${{ secrets.TWILIO_WHATSAPP_FROM }}"
+            export POSTGRES_DB_URL=${{ secrets.POSTGRES_DB_URL }}
+            export POSTGRES_DB_USERNAME=${{ secrets.POSTGRES_DB_USERNAME }}
+            export POSTGRES_DB_PASSWORD=${{ secrets.POSTGRES_DB_PASSWORD }}
+            export JWT_SECRET=${{ secrets.JWT_SECRET }}
+            export K2_SMS_USERNAME=${{ secrets.K2_SMS_USERNAME }}
+            export K2_SMS_PASSWORD=${{ secrets.K2_SMS_PASSWORD }}
+            export TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }}
+            export TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }}
+            export TWILIO_WHATSAPP_FROM=${{ secrets.TWILIO_WHATSAPP_FROM }}
             echo "Environment variables set."
           EOF
 
