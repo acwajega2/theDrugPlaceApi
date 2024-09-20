@@ -76,6 +76,8 @@ jobs:
       - name: SSH into AWS instance and set environment variables
         run: |
           ssh -t -i ssh_key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
+            export MY_ENV_VAR=value
+            echo "MY_ENV_VAR is set to: $MY_ENV_VAR"
             export POSTGRES_DB_URL=${{ secrets.POSTGRES_DB_URL }}
             export POSTGRES_DB_USERNAME=${{ secrets.POSTGRES_DB_USERNAME }}
             export POSTGRES_DB_PASSWORD=${{ secrets.POSTGRES_DB_PASSWORD }}
