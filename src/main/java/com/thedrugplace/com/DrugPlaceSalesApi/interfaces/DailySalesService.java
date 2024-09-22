@@ -5,6 +5,7 @@ import com.thedrugplace.com.DrugPlaceSalesApi.dtos.sales.BranchSalesDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.sales.DailySalesDto;
 import com.thedrugplace.com.DrugPlaceSalesApi.dtos.staff.BestPerformingStaffDto;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,4 +83,6 @@ public interface DailySalesService {
      * @return A list of BestPerformingStaffDto representing best performing staff members.
      */
     List<BestPerformingStaffDto> getBestPerformingStaffByMonthAndYear();
+
+    Double getPreviousDaySales(Date date);
 }

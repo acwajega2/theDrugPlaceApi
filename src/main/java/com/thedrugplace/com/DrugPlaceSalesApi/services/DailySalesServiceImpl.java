@@ -173,4 +173,14 @@ public class DailySalesServiceImpl implements DailySalesService {
             throw new CustomException("Failed to get getBestPerformingStaffByMonthAndYear: " + ex.getMessage());
         }
     }
+
+    @Override
+    public Double getPreviousDaySales(Date yesterday) {
+        return dailySalesRepository.findTotalSalesByDate(yesterday);
+    }
+
+    public Double getPrevDaySales() {
+        Date yesterday = new Date(System.currentTimeMillis() - (1000 * 60 * 60 * 24)); // One day ago
+        return dailySalesRepository.findTotalSalesByDate(yesterday);
+    }
 }

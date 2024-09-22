@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,5 +76,6 @@ public interface DailySalesRepository extends JpaRepository<DailySales, Long> {
     @Query("SELECT b FROM DailySales b WHERE transaction_reference =:transactionReference ")
     DailySales findByTransactionReference(@Param("transactionReference") String transactionReference);
 
-    
+    @Query("SELECT SUM(b.sale_amount) FROM DailySales b WHERE b.sale_date = :saleDate")
+    Double findTotalSalesByDate(@Param("saleDate") Date saleDate);
 }

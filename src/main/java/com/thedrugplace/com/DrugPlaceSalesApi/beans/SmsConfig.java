@@ -22,6 +22,9 @@ public class SmsConfig {
     @Value("${sms.api.password}")
     private String password;
 
+    @Value("${sms.templates.dailySales}")
+    private String dailySalesTemplate;
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

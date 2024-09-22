@@ -62,7 +62,11 @@ sms:
       url: https://sms.k2telecom.ug/index.php/api/sendmessage
     username: chriswajega06@gmail.com  # Use environment variable or replace with your username
     password: Elgonord!@200100  # Use environment variable or replace with your password
+  templates:
+    welcome: "Welcome to The DrugPlaceManagementSoftware, {{username}}! Your account has been created successfully."
+    order: "Your order has been placed. Order ID: {{order_id}}"
+    dailySales: "Hello %s, total sales of yesterday were %s sales "
 twilio:
-  account-sid: "test"
-  auth-token: "test"
-  whatsapp-from: "test"
+  account-sid: "AC6507afc0ae861683725f40a78ba5f2af"
+  auth-token: "1c694aff2716babea8b2ae4467700aae"
+  whatsapp-from: "whatsapp:+13146359040"
