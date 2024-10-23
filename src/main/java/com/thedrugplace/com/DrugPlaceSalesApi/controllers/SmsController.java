@@ -39,7 +39,6 @@ public class SmsController {
         calendar.add(Calendar.DATE, -1); // Subtract 1 day
         Date yesterday = calendar.getTime();
         Double totalSalesYesterday = dailySalesService.getPreviousDaySales(yesterday);
-
         return smsService.sendMessage("256772123017", "", String.format(smsConfig.getDailySalesTemplate(), "Chris", totalSalesYesterday), "");
     }
 }
