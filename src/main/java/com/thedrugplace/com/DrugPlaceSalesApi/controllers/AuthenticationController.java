@@ -41,6 +41,7 @@ public class AuthenticationController {
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
         System.out.println(authRequest.getUsername() + ":" + authRequest.getPassword());
         try {
+
             // Authenticate the user using the provided credentials
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
