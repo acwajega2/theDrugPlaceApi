@@ -61,7 +61,7 @@ public class AuthenticationController {
             // Return the token and user details as part of the response
             return ResponseEntity.ok(new AuthResponse(token, username, name, role, branchCode, staffPhone));
         } catch (AuthenticationException e) {
-            logger.error("Login failed for user: {}", authRequest.getUsername(), e);
+            logger.error("Login failed for jjj user: {}", authRequest.getUsername(), e);
             return ResponseEntity.status(401).body("Invalid username or password");
         }
     }
